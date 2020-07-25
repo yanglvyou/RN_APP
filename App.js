@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import Config from 'react-native-config';
 import {
   SafeAreaView,
   StyleSheet,
@@ -40,7 +41,9 @@ const App: () => React$Node = () => {
           )}
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
+              <Text style={styles.sectionTitle}>
+                Step One--{Config.API_URL}
+              </Text>
               <Text style={styles.sectionDescription}>
                 Edit <Text style={styles.highlight}>App.js</Text> to change this
                 screen and then come back to see your edits.
