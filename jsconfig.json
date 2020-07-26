@@ -1,12 +1,12 @@
-{
-  "compilerOptions": {
-    "target": "es2017",
-    "allowSyntheticDefaultImports": false,
-    "experimentalDecorators": true,
-    "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  },
-  "exclude": ["node_modules", "dist"]
-}
+// {
+//   "compilerOptions": {
+//     "target": "es2017",
+//     "allowSyntheticDefaultImports": false,
+//     "experimentalDecorators": true,
+//     "baseUrl": "./",
+//     "paths": {
+//       "@/*": ["src/*"]
+//     }
+//   },
+//   "exclude": ["node_modules", "dist"]
+// }
