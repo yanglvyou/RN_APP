@@ -1,0 +1,29 @@
+{
+  "javascript.implicitProjectConfig.experimentalDecorators": true,
+  "window.zoomLevel": 0,
+  "emmet.triggerExpansionOnTab": true,
+  "files.associations": {},
+  "workbench.activityBar.visible": true,
+  "[javascript]": {
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "javascript.format.enable": false,
+
+  "editor.formatOnSave": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 60000,
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+  "path-autocomplete.excludedItems": {
+    "**/*.js": {"when": "**/*.ts"}, // ignore js files if i'm inside a ts file
+    "**/*.map": {"when": "**"}, // always ignore *.map files
+    "**/{.git,node_modules}": {"when": "**"} // always ignore .git and node_modules folders
+  },
+  "path-autocomplete.pathMappings": {
+    "@": "${folder}/src"
+  }
+}
