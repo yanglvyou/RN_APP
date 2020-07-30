@@ -1,7 +1,17 @@
 import React from 'react';
 import {Animated, Platform, StyleSheet, StatusBar, Text} from 'react-native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {
+  Provider as PaperProvider,
+  DefaultTheme as PaperDefaultTheme,
+  DarkTheme as PaperDarkTheme,
+} from 'react-native-paper';
 
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DefaultTheme as NavigationDefaultTheme,
+  DarkTheme as NavigationDarkTheme,
+} from '@react-navigation/native';
 import {
   createStackNavigator,
   HeaderStyleInterpolators,
@@ -11,8 +21,45 @@ import {
 
 import BottomTabs from './BottomTabs';
 
+import OpeningStackScreen from './OpeningStackScreen';
+
+
 const Navigator = () => {
+  const Drawer = createDrawerNavigator();
   const Stack = createStackNavigator();
+
+
+  const [isDarkTheme,setIsDarkTheme]=React.useState(false);
+
+
+  const CustomDefaultTheme = {
+    ...NavigationDefaultTheme,
+    ...PaperDefaultTheme,
+    colors: {
+      ...NavigationDefaultTheme.colors,
+      ...PaperDefaultTheme.colors,
+      background: '#ffffff',
+      text: '#333333',
+    },
+  };
+
+
+  const CustomDarkTheme = {
+    ...NavigationDarkTheme,
+    ...PaperDarkTheme,
+    colors: {
+      ...NavigationDarkTheme.colors,
+      ...PaperDarkTheme.colors,
+      background: '#333333',
+      text: '#ffffff',
+    },
+  };
+
+
+  const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
+
+
+
 
   const RootStackScreen = () => {
     return (
@@ -74,14 +121,17 @@ const Navigator = () => {
   }
 
   return (
-    <NavigationContainer>
-      <ModalStackScreen />
-      <StatusBar
-        backgroundColor={'transparent'}
-        barStyle={'dark-content'}
-        translucent
-      />
-    </NavigationContainer>
+    <PaperProvider theme={theme}>
+      <NavigationContainer theme={theme}>
+        {/*<ModalStackScreen />*/}
+        <OpeningStackScreen />
+        <StatusBar
+          backgroundColor={'transparent'}
+          barStyle={'dark-content'}
+          translucent
+        />
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 

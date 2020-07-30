@@ -4,6 +4,7 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
+import Iconhuanyingni from './Iconhuanyingni';
 import Iconzongyi from './Iconzongyi';
 import Icondongman from './Icondongman';
 import Iconhuiyuan from './Iconhuiyuan';
@@ -42,7 +43,7 @@ import Iconyemian1 from './Iconyemian1';
 import Iconindex from './Iconindex';
 import Iconindex1 from './Iconindex1';
 
-export type IconNames = 'iconzongyi' | 'icondongman' | 'iconhuiyuan' | 'icontinggeshiqu' | 'iconhuiyuan1' | 'iconhuiyuan2' | 'iconhuiyuan3' | 'iconerjiyinletingge' | 'iconhuiyuan7' | 'iconhuiyuan4' | 'iconbofang1' | 'iconshanchu' | 'iconshangyishou' | 'iconxiayishou' | 'iconzantingtingzhi' | 'iconbofang' | 'iconarrow-down' | 'iconshijian' | 'iconjia' | 'iconjian' | 'iconmeiyoushuju' | 'iconshengyin' | 'iconicon-test' | 'iconshengyin1' | 'iconxihuan-' | 'iconxihuantianchong' | 'iconziyuan' | 'icongengduo' | 'iconfaxian' | 'iconiconfontxingxing' | 'iconzhanghao' | 'iconren' | 'iconshoucang' | 'iconyemian' | 'iconyemian1' | 'iconindex' | 'iconindex1';
+export type IconNames = 'iconhuanyingni' | 'iconzongyi' | 'icondongman' | 'iconhuiyuan' | 'icontinggeshiqu' | 'iconhuiyuan1' | 'iconhuiyuan2' | 'iconhuiyuan3' | 'iconerjiyinletingge' | 'iconhuiyuan7' | 'iconhuiyuan4' | 'iconbofang1' | 'iconshanchu' | 'iconshangyishou' | 'iconxiayishou' | 'iconzantingtingzhi' | 'iconbofang' | 'iconarrow-down' | 'iconshijian' | 'iconjia' | 'iconjian' | 'iconmeiyoushuju' | 'iconshengyin' | 'iconicon-test' | 'iconshengyin1' | 'iconxihuan-' | 'iconxihuantianchong' | 'iconziyuan' | 'icongengduo' | 'iconfaxian' | 'iconiconfontxingxing' | 'iconzhanghao' | 'iconren' | 'iconshoucang' | 'iconyemian' | 'iconyemian1' | 'iconindex' | 'iconindex1';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -52,80 +53,82 @@ interface Props extends GProps, ViewProps {
 
 const IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
+    case 'iconhuanyingni':
+      return <Iconhuanyingni key="1" {...rest} />;
     case 'iconzongyi':
-      return <Iconzongyi key="1" {...rest} />;
+      return <Iconzongyi key="2" {...rest} />;
     case 'icondongman':
-      return <Icondongman key="2" {...rest} />;
+      return <Icondongman key="3" {...rest} />;
     case 'iconhuiyuan':
-      return <Iconhuiyuan key="3" {...rest} />;
+      return <Iconhuiyuan key="4" {...rest} />;
     case 'icontinggeshiqu':
-      return <Icontinggeshiqu key="4" {...rest} />;
+      return <Icontinggeshiqu key="5" {...rest} />;
     case 'iconhuiyuan1':
-      return <Iconhuiyuan1 key="5" {...rest} />;
+      return <Iconhuiyuan1 key="6" {...rest} />;
     case 'iconhuiyuan2':
-      return <Iconhuiyuan2 key="6" {...rest} />;
+      return <Iconhuiyuan2 key="7" {...rest} />;
     case 'iconhuiyuan3':
-      return <Iconhuiyuan3 key="7" {...rest} />;
+      return <Iconhuiyuan3 key="8" {...rest} />;
     case 'iconerjiyinletingge':
-      return <Iconerjiyinletingge key="8" {...rest} />;
+      return <Iconerjiyinletingge key="9" {...rest} />;
     case 'iconhuiyuan7':
-      return <Iconhuiyuan7 key="9" {...rest} />;
+      return <Iconhuiyuan7 key="10" {...rest} />;
     case 'iconhuiyuan4':
-      return <Iconhuiyuan4 key="10" {...rest} />;
+      return <Iconhuiyuan4 key="11" {...rest} />;
     case 'iconbofang1':
-      return <Iconbofang1 key="11" {...rest} />;
+      return <Iconbofang1 key="12" {...rest} />;
     case 'iconshanchu':
-      return <Iconshanchu key="12" {...rest} />;
+      return <Iconshanchu key="13" {...rest} />;
     case 'iconshangyishou':
-      return <Iconshangyishou key="13" {...rest} />;
+      return <Iconshangyishou key="14" {...rest} />;
     case 'iconxiayishou':
-      return <Iconxiayishou key="14" {...rest} />;
+      return <Iconxiayishou key="15" {...rest} />;
     case 'iconzantingtingzhi':
-      return <Iconzantingtingzhi key="15" {...rest} />;
+      return <Iconzantingtingzhi key="16" {...rest} />;
     case 'iconbofang':
-      return <Iconbofang key="16" {...rest} />;
+      return <Iconbofang key="17" {...rest} />;
     case 'iconarrow-down':
-      return <IconarrowDown key="17" {...rest} />;
+      return <IconarrowDown key="18" {...rest} />;
     case 'iconshijian':
-      return <Iconshijian key="18" {...rest} />;
+      return <Iconshijian key="19" {...rest} />;
     case 'iconjia':
-      return <Iconjia key="19" {...rest} />;
+      return <Iconjia key="20" {...rest} />;
     case 'iconjian':
-      return <Iconjian key="20" {...rest} />;
+      return <Iconjian key="21" {...rest} />;
     case 'iconmeiyoushuju':
-      return <Iconmeiyoushuju key="21" {...rest} />;
+      return <Iconmeiyoushuju key="22" {...rest} />;
     case 'iconshengyin':
-      return <Iconshengyin key="22" {...rest} />;
+      return <Iconshengyin key="23" {...rest} />;
     case 'iconicon-test':
-      return <IconiconTest key="23" {...rest} />;
+      return <IconiconTest key="24" {...rest} />;
     case 'iconshengyin1':
-      return <Iconshengyin1 key="24" {...rest} />;
+      return <Iconshengyin1 key="25" {...rest} />;
     case 'iconxihuan-':
-      return <Iconxihuan key="25" {...rest} />;
+      return <Iconxihuan key="26" {...rest} />;
     case 'iconxihuantianchong':
-      return <Iconxihuantianchong key="26" {...rest} />;
+      return <Iconxihuantianchong key="27" {...rest} />;
     case 'iconziyuan':
-      return <Iconziyuan key="27" {...rest} />;
+      return <Iconziyuan key="28" {...rest} />;
     case 'icongengduo':
-      return <Icongengduo key="28" {...rest} />;
+      return <Icongengduo key="29" {...rest} />;
     case 'iconfaxian':
-      return <Iconfaxian key="29" {...rest} />;
+      return <Iconfaxian key="30" {...rest} />;
     case 'iconiconfontxingxing':
-      return <Iconiconfontxingxing key="30" {...rest} />;
+      return <Iconiconfontxingxing key="31" {...rest} />;
     case 'iconzhanghao':
-      return <Iconzhanghao key="31" {...rest} />;
+      return <Iconzhanghao key="32" {...rest} />;
     case 'iconren':
-      return <Iconren key="32" {...rest} />;
+      return <Iconren key="33" {...rest} />;
     case 'iconshoucang':
-      return <Iconshoucang key="33" {...rest} />;
+      return <Iconshoucang key="34" {...rest} />;
     case 'iconyemian':
-      return <Iconyemian key="34" {...rest} />;
+      return <Iconyemian key="35" {...rest} />;
     case 'iconyemian1':
-      return <Iconyemian1 key="35" {...rest} />;
+      return <Iconyemian1 key="36" {...rest} />;
     case 'iconindex':
-      return <Iconindex key="36" {...rest} />;
+      return <Iconindex key="37" {...rest} />;
     case 'iconindex1':
-      return <Iconindex1 key="37" {...rest} />;
+      return <Iconindex1 key="38" {...rest} />;
   }
 
   return null;
