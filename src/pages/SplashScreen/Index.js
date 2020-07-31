@@ -9,16 +9,22 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
-import {useTheme} from '@react-navigation/native';
+import {useTheme, useNavigation} from '@react-navigation/native';
 import IconFont from '@/assets/iconfont';
 const SplashScreen = () => {
+  const navigation = useNavigation();
   const {colors} = useTheme();
+
+  const goToSignInScreen = () => {
+    navigation.navigate('SignInScreen');
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
         <Animatable.View animation="bounceIn" duraton="1500">
-        <IconFont name='iconhuanyingni' size={100} />
+          <IconFont name="iconhuanyingni" size={120} />
         </Animatable.View>
       </View>
       <Animatable.View
@@ -32,12 +38,15 @@ const SplashScreen = () => {
         <Text style={[styles.title, {color: colors.text}]}>欢迎</Text>
         <Text style={styles.text}>登录账户</Text>
         <View style={styles.button}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              goToSignInScreen();
+            }}>
             <LinearGradient
               style={styles.sigin}
               colors={['#08d4c4', '#01ab9d']}>
               <Text style={styles.textSign}>请先登陆</Text>
-              <IconFont name='icongengduo' size={16} color="#fff" />
+              <IconFont name="icongengduo" size={16} color="#fff" />
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -90,8 +99,8 @@ const styles = StyleSheet.create({
   textSign: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize:20,
-    marginRight:5,
+    fontSize: 20,
+    marginRight: 5,
   },
   footer: {
     flex: 1,
