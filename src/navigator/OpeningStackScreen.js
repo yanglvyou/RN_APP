@@ -1,4 +1,5 @@
 import React from 'react';
+import {Platform,StyleSheet} from 'react-native';
 import {
   createStackNavigator,
   CardStyleInterpolators,
@@ -12,7 +13,7 @@ const OpeningStack = createStackNavigator();
 
 const OpeningStackScreen = () => (
   <OpeningStack.Navigator
-    headerMode="none" // 去掉导航顶部
+    // headerMode="none" // 去掉导航顶部
     screenOptions={{
       gestureEnabled: true,
       headerTitleAlign: 'center',
@@ -21,22 +22,22 @@ const OpeningStackScreen = () => (
     }}>
     <OpeningStack.Screen
       name="SplashScreen"
-      options={{headerShown: true}} // 去掉导航顶部
-      component={SplashScreen}
       options={{
-        // cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
-      }}
+        headerShown: false,
+        cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+      }} // 去掉导航顶部
+      component={SplashScreen}
     />
     <OpeningStack.Screen
       name="SignInScreen"
-      options={{headerShown: true}} // 去掉导航顶部
       component={SignInScreen}
-      options={
-        {
-          // cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-        }
-      }
+      options={{
+        headerShown: true,
+        headerTransparent: true,
+        headerTitle:'',
+        // cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+        cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+      }}
     />
   </OpeningStack.Navigator>
 );

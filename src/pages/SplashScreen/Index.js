@@ -21,7 +21,6 @@ const SplashScreen = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
         <Animatable.View animation="bounceIn" duraton="1500">
           <IconFont name="iconhuanyingni" size={120} />

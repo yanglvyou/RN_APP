@@ -7,16 +7,19 @@ import {
   TextInput,
   Platform,
   TouchableOpacity,
+  Pressable,
+  Dimensions,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
-import {useTheme} from 'react-native-paper';
-import Feather from 'react-native-vector-icons/Feather';
-// import {TextInput} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+import {useTheme, Paragraph, Dialog, Portal} from 'react-native-paper';
+// import Feather from 'react-native-vector-icons/Feather';
 
 import IconFont from '@/assets/iconfont';
 
 const SignInScreen = () => {
+  const navigation = useNavigation();
   const {colors} = useTheme();
 
   const [data, setData] = React.useState({
@@ -26,6 +29,8 @@ const SignInScreen = () => {
     secureTextEntry: true,
     isValidUser: true,
     isValidPassword: true,
+    isTextInputEmpty: false,
+    isTextInputIncorrect: false,
   });
 
   const textInputChange = (val) => {
@@ -84,25 +89,27 @@ const SignInScreen = () => {
   };
 
   const loginHandle = (userName, password) => {
-    // const foundUser = Users.filter(item => {
-    //   return userName == item.username && password == item.password;
-    // });
+    if (data.username.length === 0 || data.password.length === 0) {
+      setData({
+        ...data,
+        isTextInputEmpty: true,
+      });
+      return;
+    }
 
-    // if (data.username.length === 0 || data.password.length === 0) {
-    //   Toast.info('用户名或密码不能为空');
-    //   return;
-    // }
+    if (data.username.length < 4 || data.password.length < 8) {
+      return;
+    }
 
-    // if (foundUser.length === 0) {
-    //   Toast.info('用户名或密码不正确');
-    //   return;
-    // }
-    // signIn(foundUser);
+    navigation.navigate('Home');
+  };
+
+  const hideDialog = () => {
+    setData({...data, isTextInputEmpty: false, isTextInputIncorrect: false});
   };
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
         <Text style={styles.text_header}>欢迎</Text>
       </View>
@@ -188,6 +195,16 @@ const SignInScreen = () => {
           </TouchableOpacity>
         </View>
       </Animatable.View>
+      <Dialog
+        visible={data.isTextInputEmpty || data.isTextInputEmpty}
+        onDismiss={hideDialog}
+        style={{height: 100, alignItems: 'center', justifyContent: 'center'}}>
+        <Dialog.Title style={{color: 'red'}}>
+          {data.isTextInputEmpty
+            ? '用户名或密码不能为空'
+            : '用户名或密码不正确'}
+        </Dialog.Title>
+      </Dialog>
     </View>
   );
 };

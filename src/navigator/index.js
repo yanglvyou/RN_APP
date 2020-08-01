@@ -23,14 +23,11 @@ import BottomTabs from './BottomTabs';
 
 import OpeningStackScreen from './OpeningStackScreen';
 
-
 const Navigator = () => {
   const Drawer = createDrawerNavigator();
   const Stack = createStackNavigator();
 
-
-  const [isDarkTheme,setIsDarkTheme]=React.useState(false);
-
+  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
   const CustomDefaultTheme = {
     ...NavigationDefaultTheme,
@@ -43,7 +40,6 @@ const Navigator = () => {
     },
   };
 
-
   const CustomDarkTheme = {
     ...NavigationDarkTheme,
     ...PaperDarkTheme,
@@ -55,11 +51,7 @@ const Navigator = () => {
     },
   };
 
-
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
-
-
-
 
   const RootStackScreen = () => {
     return (
@@ -85,7 +77,6 @@ const Navigator = () => {
         <Stack.Screen
           name="BottomTabs"
           component={BottomTabs}
-          options={{headerTitle: '底部标签导航'}}
         />
       </Stack.Navigator>
     );
@@ -123,13 +114,16 @@ const Navigator = () => {
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer theme={theme}>
-        {/*<ModalStackScreen />*/}
-        <OpeningStackScreen />
         <StatusBar
           backgroundColor={'transparent'}
           barStyle={'dark-content'}
           translucent
         />
+        {/*<ModalStackScreen />*/}
+        <Drawer.Navigator>
+         <Drawer.Screen name="HomeDrawer" component={ModalStackScreen}/>
+        </Drawer.Navigator>
+        {/*<OpeningStackScreen />*/}
       </NavigationContainer>
     </PaperProvider>
   );

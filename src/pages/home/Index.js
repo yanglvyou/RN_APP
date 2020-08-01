@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Button} from 'react-native';
 import {useSelector} from 'react-redux';
 
 const Home = () => {
@@ -8,7 +8,7 @@ const Home = () => {
 
   return (
     <View>
-      <Text>Home</Text>
+      <Text>111111</Text>
     </View>
   );
 };

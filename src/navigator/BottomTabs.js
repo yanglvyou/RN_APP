@@ -1,12 +1,13 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import Home from '@/pages/home/Index';
 import IconFont from '@/assets/iconfont';
 import Anime from '@/pages/anime/Index';
 import User from '@/pages/user/Index';
 import VarietyShow from '@/pages/varietyShow/Index';
 
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabs = (props) => {
   return (
@@ -19,6 +20,7 @@ const BottomTabs = (props) => {
         component={Home}
         options={{
           tabBarLabel: '首页',
+          tabBarColor: '#009387',
           tabBarIcon: ({color, size}) => (
             <IconFont name="iconyemian" size={size} color={color} />
           ),
@@ -28,9 +30,10 @@ const BottomTabs = (props) => {
         name="Anime"
         component={Anime}
         options={{
-          tabBarLabel: '动漫',
+          tabBarLabel: '我听',
+          tabBarColor: '#1f65ff',
           tabBarIcon: ({color, size}) => (
-            <IconFont name="icondongman" size={size} color={color} />
+            <IconFont name="iconshoucang" size={size} color={color} />
           ),
         }}
       />
@@ -39,9 +42,10 @@ const BottomTabs = (props) => {
         name="VarietyShow"
         component={VarietyShow}
         options={{
-          tabBarLabel: '综艺',
+          tabBarLabel: '发现',
+          tabBarColor: '#694fad',
           tabBarIcon: ({color, size}) => (
-            <IconFont name="iconzongyi" size={size} color={color} />
+            <IconFont name="iconfaxian" size={size} color={color} />
           ),
         }}
       />
@@ -50,8 +54,9 @@ const BottomTabs = (props) => {
         component={User}
         options={{
           tabBarLabel: '我的',
+          tabBarColor: '#d02860',
           tabBarIcon: ({color, size}) => (
-            <IconFont name="iconren" size={size} color={color} />
+            <IconFont name="iconzhanghao" size={size} color={color} />
           ),
         }}
       />
