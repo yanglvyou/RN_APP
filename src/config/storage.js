@@ -22,6 +22,6 @@ const load = (params) => {
   return storage.load(params);
 };
 
-export {load};
+export { load };
 
 export default storage;

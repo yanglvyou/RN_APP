@@ -1,19 +1,25 @@
 import React from 'react';
+import {StyleSheet} from 'react-native';
 // import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
+// import {useFocusEffect} from '@react-navigation/native';
 import Home from '@/pages/home/Index';
 import IconFont from '@/assets/iconfont';
 import Anime from '@/pages/anime/Index';
-import User from '@/pages/user/Index';
+import UserScreen from '@/pages/UserScreen/Index';
 import VarietyShow from '@/pages/varietyShow/Index';
 
 const Tab = createMaterialBottomTabNavigator();
 
+const UserStack = createStackNavigator();
+
 const BottomTabs = (props) => {
+
   return (
     <Tab.Navigator
       tabBarOptions={{activeTintColor: '#f86442'}}
-      // screenOptions={{tabBarVisible: false}}
+      initialRouteName="Home"
       sceneAnimationEnabled>
       <Tab.Screen
         name="Home"
@@ -21,13 +27,14 @@ const BottomTabs = (props) => {
         options={{
           tabBarLabel: '首页',
           tabBarColor: '#009387',
+          headerTitle: '首页',
           tabBarIcon: ({color, size}) => (
             <IconFont name="iconyemian" size={size} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="Anime"
+        name="Listen"
         component={Anime}
         options={{
           tabBarLabel: '我听',
@@ -39,7 +46,7 @@ const BottomTabs = (props) => {
       />
 
       <Tab.Screen
-        name="VarietyShow"
+        name="Found"
         component={VarietyShow}
         options={{
           tabBarLabel: '发现',
@@ -50,11 +57,12 @@ const BottomTabs = (props) => {
         }}
       />
       <Tab.Screen
-        name="User"
-        component={User}
+        name="Account"
+        component={UserStackScreen}
         options={{
           tabBarLabel: '我的',
           tabBarColor: '#d02860',
+
           tabBarIcon: ({color, size}) => (
             <IconFont name="iconzhanghao" size={size} color={color} />
           ),
@@ -65,3 +73,51 @@ const BottomTabs = (props) => {
 };
 
 export default BottomTabs;
+
+const UserStackScreen = ({navigation}) => (
+  <UserStack.Navigator
+    screenOptions={{
+      headerTransparent: true,
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+      headerTitleAlign: 'center',
+      gestureEnabled: true,
+      headerBackTitleVisible: false,
+      headerTintColor: '#ccc',
+      gestureDirection: 'horizontal',
+      headerStyle: {
+        backgroundColor: '#009387',
+        ...Platform.select({
+          android: {
+            elevation: 0,
+            borderBottomWidth: StyleSheet.hairlineWidth,
+          },
+        }),
+      },
+    }}>
+    <UserStack.Screen
+      name="User"
+      component={UserScreen}
+      options={{
+        headerRightContainerStyle: styles.headerRightContainerStyle,
+        headerRight: ({color, size}) => (
+          <IconFont
+            name="iconmenu2"
+            size={size}
+            color={color}
+            onPress={() => navigation.openDrawer()}
+          />
+        ),
+        headerTitle: '',
+      }}
+    />
+  </UserStack.Navigator>
+);
+
+const styles = StyleSheet.create({
+  headerRightContainerStyle: {
+    paddingRight: 15,
+  },
+});

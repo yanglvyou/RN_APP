@@ -14,14 +14,15 @@ import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme, Paragraph, Dialog, Portal} from 'react-native-paper';
-// import Feather from 'react-native-vector-icons/Feather';
+import storage, {load} from '@/config/storage';
+import {AuthContext} from '@/components/Context';
 
 import IconFont from '@/assets/iconfont';
 
 const SignInScreen = () => {
   const navigation = useNavigation();
   const {colors} = useTheme();
-
+  const {signIn} = React.useContext(AuthContext);
   const [data, setData] = React.useState({
     username: '',
     password: '',
@@ -101,7 +102,9 @@ const SignInScreen = () => {
       return;
     }
 
-    navigation.navigate('Home');
+    storage.save({key: 'userName', data: 'logoIn'});
+    signIn('logoIn');
+
   };
 
   const hideDialog = () => {

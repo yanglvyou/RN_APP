@@ -1,5 +1,13 @@
 import React from 'react';
-import {Animated, Platform, StyleSheet, StatusBar, Text} from 'react-native';
+import {
+  Animated,
+  Platform,
+  StyleSheet,
+  StatusBar,
+  View,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {
   Provider as PaperProvider,
@@ -19,15 +27,25 @@ import {
   HeaderBackButton,
 } from '@react-navigation/stack';
 
+import IconFont from '@/assets/iconfont';
+
+import storage, {load} from '@/config/storage';
+
 import BottomTabs from './BottomTabs';
 
 import OpeningStackScreen from './OpeningStackScreen';
 
+import {DrawerContent} from '@/components//DrawerContent';
+import {AuthContext} from '@/components/Context';
+
+const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
 const Navigator = () => {
-  const Drawer = createDrawerNavigator();
-  const Stack = createStackNavigator();
+  const [userName, setUserName] = React.useState('');
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+  console.log('isDarkTheme: ', isDarkTheme);
 
   const CustomDefaultTheme = {
     ...NavigationDefaultTheme,
@@ -53,6 +71,23 @@ const Navigator = () => {
 
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
 
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async () => {
+        setUserName('logoIn');
+      },
+      signOut: async () => {
+        storage.save({key: 'userName', data: 'logoOut'});
+        setUserName('logoOut');
+      },
+      signUp: () => {},
+      toggleTheme: () => {
+        setIsDarkTheme((isDarkTheme) => !isDarkTheme);
+      },
+    }),
+    [],
+  );
+
   const RootStackScreen = () => {
     return (
       <Stack.Navigator
@@ -76,6 +111,7 @@ const Navigator = () => {
         }}>
         <Stack.Screen
           name="BottomTabs"
+          options={{headerTitle: '首页'}}
           component={BottomTabs}
         />
       </Stack.Navigator>
@@ -100,7 +136,6 @@ const Navigator = () => {
               headerStatusBarHeight: StatusBar.currentHeight, //设置状态栏高度
             },
           }),
-          headerTitleAlign: 'center',
         }}>
         <ModalStack.Screen
           name="Root"
@@ -113,18 +148,23 @@ const Navigator = () => {
 
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer theme={theme}>
-        <StatusBar
-          backgroundColor={'transparent'}
-          barStyle={'dark-content'}
-          translucent
-        />
-        {/*<ModalStackScreen />*/}
-        <Drawer.Navigator>
-         <Drawer.Screen name="HomeDrawer" component={ModalStackScreen}/>
-        </Drawer.Navigator>
-        {/*<OpeningStackScreen />*/}
-      </NavigationContainer>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer theme={theme}>
+          <StatusBar
+            backgroundColor={'transparent'}
+            barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
+            translucent
+          />
+          {userName === 'logoIn' ? (
+            <Drawer.Navigator
+              drawerContent={(props) => <DrawerContent {...props} />}>
+              <Drawer.Screen name="BottomTabs" component={BottomTabs} />
+            </Drawer.Navigator>
+          ) : (
+            <OpeningStackScreen />
+          )}
+        </NavigationContainer>
+      </AuthContext.Provider>
     </PaperProvider>
   );
 };
