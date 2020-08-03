@@ -4,6 +4,7 @@ import {Provider as StoreProvider} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import Navigator from '@/navigator/index';
 import store from '@/config/dva';
+import '@/config/http';
 
 
 const Drawer = createDrawerNavigator();

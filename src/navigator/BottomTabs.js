@@ -2,11 +2,12 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-import Home from '@/pages/home/Index';
+import Home from '@/pages/Home/Index';
 import IconFont from '@/assets/iconfont';
 import Anime from '@/pages/anime/Index';
 import UserScreen from '@/pages/UserScreen/Index';
 import VarietyShow from '@/pages/varietyShow/Index';
+import HomeTabs from './HomeTabs';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -20,7 +21,7 @@ const BottomTabs = (props) => {
       sceneAnimationEnabled>
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeTabs}
         options={{
           tabBarLabel: '首页',
           tabBarColor: '#009387',

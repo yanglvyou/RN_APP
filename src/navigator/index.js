@@ -98,7 +98,7 @@ const Navigator = () => {
             barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
             translucent
           />
-          {userName === 'logoIn' ? (
+
             <Stack.Navigator
               headerMode="none"
               screenOptions={{
@@ -123,9 +123,9 @@ const Navigator = () => {
                 component={ModalStackScreen}
               />
             </Stack.Navigator>
-          ) : (
-            <LogoInStackScreen />
-          )}
+
+            {/*<LogoInStackScreen />*/}
+
         </NavigationContainer>
       </AuthContext.Provider>
     </PaperProvider>

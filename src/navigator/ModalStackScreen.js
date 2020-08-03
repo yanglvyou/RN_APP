@@ -10,7 +10,7 @@ export default function ModalStackScreen() {
   return (
     <Drawer.Navigator
       drawerPosition={'left'}
-      drawerType="slide"
+      drawerType='slide'
       edgeWidth={10}
       // drawerStyle={{}}
       drawerContent={(props) => <DrawerContent {...props} />}>
