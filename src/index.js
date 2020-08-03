@@ -11,7 +11,7 @@ const Drawer = createDrawerNavigator();
 const App = () => {
   React.useEffect(()=>{
     SplashScreen.hide();
-  })
+  },[])
   return (
     <StoreProvider store={store}>
       <Navigator />

@@ -20,6 +20,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8CC04D4E8337695F8D5F96F9 /* libPods-RN_APP-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2D78A10A7FAE1BE5172858 /* libPods-RN_APP-tvOS.a */; };
 		C782293E7019A8F02B6C9A5B /* libPods-RN_APP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BB2AAB864DC96B6766B80B /* libPods-RN_APP.a */; };
+		D7FE31C724D71A0D00060D6B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7FE31C624D71A0D00060D6B /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		8A21BE1672C94A909A379630 /* Pods-RN_APP-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RN_APP-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-RN_APP-tvOSTests/Pods-RN_APP-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9B2D78A10A7FAE1BE5172858 /* libPods-RN_APP-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RN_APP-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B96E223E57BA90E421FF6622 /* Pods-RN_APP-RN_APPTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RN_APP-RN_APPTests.release.xcconfig"; path = "Target Support Files/Pods-RN_APP-RN_APPTests/Pods-RN_APP-RN_APPTests.release.xcconfig"; sourceTree = "<group>"; };
+		D7FE31C624D71A0D00060D6B /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		E0B5FC4877C3A19DBEEBB7C8 /* Pods-RN_APP-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RN_APP-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-RN_APP-tvOS/Pods-RN_APP-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -161,7 +163,6 @@
 				8A21BE1672C94A909A379630 /* Pods-RN_APP-tvOSTests.debug.xcconfig */,
 				81352C84B5D3DC967C37898A /* Pods-RN_APP-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -175,6 +176,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				D7FE31C624D71A0D00060D6B /* Launch Screen.storyboard */,
 				13B07FAE1A68108700A75B9A /* RN_APP */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RN_APPTests */,
@@ -340,6 +342,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7FE31C724D71A0D00060D6B /* Launch Screen.storyboard in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

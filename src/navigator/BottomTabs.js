@@ -1,9 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-// import {useFocusEffect} from '@react-navigation/native';
 import Home from '@/pages/home/Index';
 import IconFont from '@/assets/iconfont';
 import Anime from '@/pages/anime/Index';
@@ -15,7 +13,6 @@ const Tab = createMaterialBottomTabNavigator();
 const UserStack = createStackNavigator();
 
 const BottomTabs = (props) => {
-
   return (
     <Tab.Navigator
       tabBarOptions={{activeTintColor: '#f86442'}}
@@ -72,7 +69,6 @@ const BottomTabs = (props) => {
   );
 };
 
-export default BottomTabs;
 
 const UserStackScreen = ({navigation}) => (
   <UserStack.Navigator
@@ -84,6 +80,7 @@ const UserStackScreen = ({navigation}) => (
       },
       headerTitleAlign: 'center',
       gestureEnabled: true,
+      headerTitle:false,
       headerBackTitleVisible: false,
       headerTintColor: '#ccc',
       gestureDirection: 'horizontal',
@@ -110,7 +107,6 @@ const UserStackScreen = ({navigation}) => (
             onPress={() => navigation.openDrawer()}
           />
         ),
-        headerTitle: '',
       }}
     />
   </UserStack.Navigator>
@@ -121,3 +117,13 @@ const styles = StyleSheet.create({
     paddingRight: 15,
   },
 });
+
+const Stack = createStackNavigator();
+
+export default () => {
+  return (
+    <Stack.Navigator headerMode="none">
+      <Stack.Screen name="bottomtabs" component={BottomTabs} />
+    </Stack.Navigator>
+  );
+};
