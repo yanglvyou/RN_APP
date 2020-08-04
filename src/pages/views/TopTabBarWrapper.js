@@ -17,7 +17,6 @@ const TopTabBarWrapper = (props) => {
   const route = useRoute();
   if(route.state){
     const routeName = getActiveRouteName(route.state);
-    console.log('routeName: ', routeName);
   }
 
   const {gradientVisible, carousels} = useSelector(({home}) => home);
