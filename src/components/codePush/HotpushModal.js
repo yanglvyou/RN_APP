@@ -6,10 +6,13 @@ import {
   StyleSheet,
   Modal,
   TouchableNativeFeedback,
+  Image,
   Dimensions,
-  ProgressBarAndroid,
 } from 'react-native';
 import CodePush from 'react-native-code-push';
+import LinearGradient from 'react-native-linear-gradient';
+import ProgressBar from 'react-native-progress/Bar';
+import IconFont from '@/assets/iconfont';
 // 安卓下的热更新 CODE_PUSH_KEY
 const CODE_PUSH_KEY = 'yuCW8NX_EzOpz69pJJNQqdrPDuhC_wpDVICBi';
 // 屏幕
@@ -23,7 +26,9 @@ class HotpushModal extends PureComponent {
       isMandatory: false,
       isUpdate: false,
       updateInfo: {},
+      CodePushRelease: '',
       progress: 0,
+      packageSize: 0,
     };
   }
 
@@ -32,12 +37,13 @@ class HotpushModal extends PureComponent {
     CodePush.notifyAppReady();
     // 检查更新
     this.check();
+    this.getUpdateMetadata();
   }
 
   // 检查更新
   check = () => {
     CodePush.checkForUpdate(CODE_PUSH_KEY).then((update) => {
-      console.log(update);
+      console.log(update, 888888888888888);
       if (!update || update.failedInstall) {
         // 已是最新版
       } else {
@@ -45,6 +51,18 @@ class HotpushModal extends PureComponent {
           modalVisible: true,
           updateInfo: update,
           isMandatory: update.isMandatory,
+        });
+      }
+    });
+  };
+
+  getUpdateMetadata = () => {
+    CodePush.getUpdateMetadata().then((update) => {
+      console.log('update: ', update, 111);
+      if (update) {
+        this.setState({
+          CodePushRelease: update.label,
+          packageSize: update.packageSize,
         });
       }
     });
@@ -66,8 +84,8 @@ class HotpushModal extends PureComponent {
         updateDialog: false,
         installMode: CodePush.InstallMode.IMMEDIATE,
       },
-      this.codePushStatusDidChange,
-      this.codePushDownloadDidProgress,
+      this.codePushStatusDidChange.bind(this),
+      this.codePushDownloadDidProgress.bind(this),
     );
   };
 
@@ -115,7 +133,7 @@ class HotpushModal extends PureComponent {
   codePushDownloadDidProgress = (Progress) => {
     if (this.state.isUpdate) {
       let currProgress =
-        Math.round((Progress.receivedBytes / Progress.totalBytes) * 100) / 100;
+        Math.floor((Progress.receivedBytes / Progress.totalBytes) * 100) / 100;
       if (currProgress >= 1) {
         this.setState({modalVisible: false});
       } else {
@@ -127,26 +145,43 @@ class HotpushModal extends PureComponent {
   };
 
   render() {
-      console.log(1111111111);
+    console.log(44444);
+    const packageSize = parseInt(this.state.packageSize / 1024);
+    console.log('packageSize: ', packageSize);
     return (
       <Modal
-        animationType={'none'}
+        animationType={'slide'}
         transparent={true}
         visible={this.state.modalVisible}>
         <View style={styles.content}>
           {!this.state.isUpdate ? (
             <View style={styles.contentArea}>
-              <Text
-                style={[styles.header, {}]}>
-                发现新版本
-              </Text>
+              <LinearGradient
+                colors={['#009387', '#009387']}
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 0}}
+                style={styles.linearHeader}>
+                <View  style={styles.titleWrapper}>
+                  <IconFont
+                    name="iconhuojian1"
+                    size={40}
+                    color="#fff"
+                    style={styles.iconhuojian2}
+                  />
+                  <Text style={[styles.label]}>
+                    发现新版本{this.state.CodePushRelease}
+                  </Text>
+                </View>
+                <Image
+                  style={styles.header_bg}
+                  resizeMode="contain"
+                  source={require('../../assets//updata.png')}
+                />
+              </LinearGradient>
+              <Text style={styles.packageSize}>更新包大小{packageSize}KB</Text>
               <View style={styles.updateDes}>
-                <Text style={styles.title}>更新内容</Text>
-                <Text
-                  style={[
-                    styles.description,
-
-                  ]}>
+                <Text style={styles.title}>更新内容:</Text>
+                <Text style={[styles.description]}>
                   {this.state.updateInfo.description || '暂无版本介绍'}
                 </Text>
               </View>
@@ -154,11 +189,7 @@ class HotpushModal extends PureComponent {
               {this.state.isMandatory ? (
                 <View style={styles.buttonArea}>
                   <TouchableNativeFeedback onPress={this.update}>
-                    <View
-                      style={[
-                        styles.button,
-                        {backgroundColor: 'red'},
-                      ]}>
+                    <View style={[styles.button, {backgroundColor: '#009387'}]}>
                       <Text style={styles.buttonText}>立即更新</Text>
                     </View>
                   </TouchableNativeFeedback>
@@ -173,10 +204,7 @@ class HotpushModal extends PureComponent {
                   </TouchableNativeFeedback>
                   <TouchableNativeFeedback onPress={this.update}>
                     <View
-                      style={[
-                        styles.buttons,
-                         {backgroundColor:'#ccc'}
-                      ]}>
+                      style={[styles.buttons, {backgroundColor: '#009387'}]}>
                       <Text style={styles.buttonText}>立即更新</Text>
                     </View>
                   </TouchableNativeFeedback>
@@ -185,21 +213,15 @@ class HotpushModal extends PureComponent {
             </View>
           ) : (
             <View style={styles.contentArea}>
-              <Text
-                style={[styles.header, {color: '#333'}]}>
-                正在更新下载,请稍等
+              <Text style={[styles.header, {color: '#333'}]}>
+                正在更新下载,请稍候...
               </Text>
-              <ProgressBarAndroid
-                color='#f58'
-                indeterminate={false}
+              <ProgressBar
                 progress={this.state.progress}
-                styleAttr="Horizontal"
-                style={styles.progress} />
-              <Text
-                style={[
-                  styles.header,
-                  {fontSize: 18},
-                ]}>
+                height={10}
+                width={260}
+              />
+              <Text style={[styles.header, {fontSize: 30}]}>
                 {this.state.progress * 100 + '%'}
               </Text>
             </View>
@@ -220,25 +242,48 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.6)',
   },
   contentArea: {
-    // height:400,
     width: 300,
     backgroundColor: '#fff',
     borderRadius: 20,
     display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
     width: 300,
     textAlign: 'center',
     fontSize: 20,
+    color: '#DB4C40',
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   updateDes: {
     width: 300,
     paddingLeft: 30,
     paddingRight: 30,
+  },
+  header_bg: {
+    width: 300,
+    height: 100,
+    marginBottom: -20,
+  },
+  titleWrapper:{
+    height:60,
+   flexDirection:'row',
+   justifyContent:'space-around',
+  },
+  packageSize:{
+    color:'red',
+    marginBottom:10,
+  },
+  label:{
+     color:'#fff',
+     fontSize:30,
+  },
+  linearHeader: {
+    paddingTop:20,
+    borderTopLeftRadius:20,
+    borderTopRightRadius:20,
   },
   title: {
     fontSize: 18,
@@ -274,6 +319,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 10,
     paddingRight: 10,
+    paddingBottom:10,
   },
   buttons: {
     width: 105,
@@ -288,5 +334,9 @@ const styles = StyleSheet.create({
     marginLeft: 50,
     marginRight: 50,
     borderRadius: 10,
+  },
+  iconhuojian2: {
+    // position: 'absolute',
+    // top: -100,
   },
 });

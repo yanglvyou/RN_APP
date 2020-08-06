@@ -7,7 +7,7 @@ import Navigator from '@/navigator/index';
 import store from '@/config/dva';
 import '@/config/http';
 
-let codePushOptions = { checkFrequency: CodePush.CheckFrequency.ON_APP_START };
+let codePushOptions = { checkFrequency: CodePush.CheckFrequency.MANUAL };
 
 
 const Drawer = createDrawerNavigator();
