@@ -40,7 +40,7 @@ import {DrawerContent} from '@/components//DrawerContent';
 import {AuthContext} from '@/components/Context';
 
 
-import HotpushModal from '@/components/codePush/HotpushModal';
+import HotpushModal from '@/components/codePush/HotPushModal1';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
