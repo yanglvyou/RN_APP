@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "export ENVFILE=.env.production && react-native run-android",
+    "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
@@ -18,7 +18,7 @@
     "push-android-staging": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Staging --des '1.测试code-push弹窗35\n2.修改弹窗样式\n3.调整更新模式' --m false",
     "deploy-history-android-staging": "code-push deployment history RN_APP-Android Staging",
     "deploy-history-android": "code-push deployment history RN_APP-Android Production",
-    "push-android": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Production --des '1.测试code-push弹窗35\n2.修改弹窗样式\n3.调整更新模式' --m false",
+    "push-android": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Production --des '1.测试Production环境code-push弹窗3\n2.修改弹窗样式\n3.调整更新模式' --m false",
     "publish:android": "export ENVFILE=.env.production && npx upload-pgy --apk=v7a --no-ios"
   },
   "dependencies": {

@@ -204,7 +204,11 @@ class HotpushModal extends PureComponent {
                   source={require('../../assets//updata.png')}
                 />
               </LinearGradient>
-              <Text style={styles.packageSize}>更新包大小{packageSize}KB</Text>
+              {Number(packageSize) !== 0 && (
+                <Text style={styles.packageSize}>
+                  更新包大小{packageSize}KB
+                </Text>
+              )}
               <View style={styles.updateDes}>
                 {binaryModifiedTime.length > 0 && (
                   <Text style={styles.binaryModifiedTime}>
@@ -427,7 +431,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 150,
+    bottom: 100,
   },
   iconguanbi: {},
 });

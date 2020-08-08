@@ -23,19 +23,19 @@ const Home = () => {
     (state) => state.loading.effects['home/fetchChannels'],
   );
   const dispatch = useDispatch();
-  // React.useEffect(() => {
-  //   dispatch({type: 'home/fetchCarousels'});
-  //   dispatch({type: 'home/fetchGuess'});
-  //   dispatch({type: 'home/fetchChannels'});
-  // }, []);
+  React.useEffect(() => {
+    dispatch({type: 'home/fetchCarousels'});
+    dispatch({type: 'home/fetchGuess'});
+    dispatch({type: 'home/fetchChannels'});
+  }, []);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      dispatch({type: 'home/fetchCarousels'});
-      dispatch({type: 'home/fetchGuess'});
-      dispatch({type: 'home/fetchChannels'});
-    }, []),
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     dispatch({type: 'home/fetchCarousels'});
+  //     dispatch({type: 'home/fetchGuess'});
+  //     dispatch({type: 'home/fetchChannels'});
+  //   }, []),
+  // );
 
   const [refreshing, setRefreshing] = React.useState(false);
 
