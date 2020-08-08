@@ -1,11 +1,17 @@
 import React from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {useNavigation, useTheme} from '@react-navigation/native';
+import {
+  useNavigation,
+  useTheme,
+  useFocusEffect,
+} from '@react-navigation/native';
+import Config from 'react-native-config';
 import Carousel, {sildeHeight} from '@/components/Carousel';
 import Guess from '@/components/Guess';
 import IconFont from '@/assets/iconfont';
 import ChannelItem from '@/components/ChannelItem';
+import Touchable from '@/components/Touchable';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -14,14 +20,22 @@ const Home = () => {
     ({home}) => home,
   );
   const loading = useSelector(
-    state => state.loading.effects['home/fetchChannels'],
+    (state) => state.loading.effects['home/fetchChannels'],
   );
   const dispatch = useDispatch();
-  React.useEffect(() => {
-    dispatch({type: 'home/fetchCarousels'});
-    dispatch({type: 'home/fetchGuess'});
-    dispatch({type: 'home/fetchChannels'});
-  }, []);
+  // React.useEffect(() => {
+  //   dispatch({type: 'home/fetchCarousels'});
+  //   dispatch({type: 'home/fetchGuess'});
+  //   dispatch({type: 'home/fetchChannels'});
+  // }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch({type: 'home/fetchCarousels'});
+      dispatch({type: 'home/fetchGuess'});
+      dispatch({type: 'home/fetchChannels'});
+    }, []),
+  );
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -40,7 +54,7 @@ const Home = () => {
           ]}>
           <Guess
             guess={guess}
-            onPress={item => {
+            onPress={(item) => {
               onGuessPress(item);
             }}
           />

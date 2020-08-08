@@ -3,16 +3,23 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android": "export ENVFILE=.env.production && react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
+    "clean:android": "cd android/ && ./gradlew clean && cd .. && react-native run-android",
+    "clean:build": "cd android/ && ./gradlew clean &&  ./gradlew assembleRelease",
     "clean-android-bundle": "rm -rf ./bundles/android/*",
+    "android:build": "cd android && ./gradlew assembleRelease",
+    "android:bundle": "cd android && ./gradlew bundleRelease",
+    "android:install": "cd android && ./gradlew assembleRelease && ./gradlew installRelease",
     "clean-ios-bundle": "rm -rf ./bundles/ios/*",
     "push-android-staging": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Staging --des '1.测试code-push弹窗35\n2.修改弹窗样式\n3.调整更新模式' --m false",
     "deploy-history-android-staging": "code-push deployment history RN_APP-Android Staging",
-    "deploy-history-android": "code-push deployment history RN_APP-Android Production"
+    "deploy-history-android": "code-push deployment history RN_APP-Android Production",
+    "push-android": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Production --des '1.测试code-push弹窗35\n2.修改弹窗样式\n3.调整更新模式' --m false",
+    "publish:android": "export ENVFILE=.env.production && npx upload-pgy --apk=v7a --no-ios"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
@@ -62,6 +69,7 @@
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "react-native-iconfont-cli": "^2.1.0",
+    "react-native-upload": "^2.1.0",
     "react-test-renderer": "16.13.1"
   },
   "jest": {

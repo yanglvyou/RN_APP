@@ -7,6 +7,7 @@ import {
   TouchableNativeFeedback,
   Image,
   AppState,
+  Platform,
 } from 'react-native';
 import CodePush from 'react-native-code-push';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,7 +18,10 @@ import IconFont from '@/assets/iconfont';
 // android Production=1qnDSWmgkkDs2N7pXTmH8o8tqm2e9GTZ-sG1vd ;Staging=yuCW8NX_EzOpz69pJJNQqdrPDuhC_wpDVICBi;
 
 // 安卓下的热更新 CODE_PUSH_KEY
-const CODE_PUSH_KEY = 'yuCW8NX_EzOpz69pJJNQqdrPDuhC_wpDVICBi';
+const CODE_PUSH_KEY =
+  Platform.OS === 'ios'
+    ? '1CfQKqiExW0wxcsFPynPPzMsRhmHM_e56T9rPB'
+    : '1qnDSWmgkkDs2N7pXTmH8o8tqm2e9GTZ-sG1vd';
 // 屏幕
 class HotpushModal extends PureComponent {
   constructor(props) {
@@ -67,8 +71,8 @@ class HotpushModal extends PureComponent {
 
   getUpdateMetadata = () => {
     CodePush.getUpdateMetadata().then((update) => {
-      const updateTime = new Date(Number(update.binaryModifiedTime));
       if (update) {
+        const updateTime = new Date(Number(update.binaryModifiedTime));
         this.setState({
           binaryModifiedTime:
             updateTime.toLocaleDateString().replace(/\//g, '-') +
@@ -93,8 +97,8 @@ class HotpushModal extends PureComponent {
     this.setState({isUpdate: true});
     CodePush.sync(
       {
-        // deploymentKey: CODE_PUSH_KEY,
-        // updateDialog: false,
+        deploymentKey: CODE_PUSH_KEY,
+        updateDialog: false,
         // installMode: CodePush.InstallMode.IMMEDIATE,
         // installMode: CodePush.InstallMode.ON_NEXT_RESTART,
       },
