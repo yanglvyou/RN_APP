@@ -13,13 +13,14 @@ import CodePush from 'react-native-code-push';
 import LinearGradient from 'react-native-linear-gradient';
 import ProgressBar from 'react-native-progress/Bar';
 import IconFont from '@/assets/iconfont';
-import { set } from 'react-native-reanimated';
+import {set} from 'react-native-reanimated';
 // 安卓下的热更新 CODE_PUSH_KEY
 const CODE_PUSH_KEY = 'yuCW8NX_EzOpz69pJJNQqdrPDuhC_wpDVICBi';
 
 const HotPushModal = () => {
-  const [updateData, setUpdatedata] = React.useState({
-    syncMessage:'',
+
+  const inititalState={
+    syncMessage: '',
     SyncStatusCode: 0,
     modalVisible: false, // 热更新弹窗
     isMandatory: false, // 是否强制更新
@@ -30,37 +31,48 @@ const HotPushModal = () => {
     showAskUpdateContent: false,
     CodePushRelease: '',
     progress: 0,
-    packageSize: 0
-   });
+    packageSize: 0,
+  }
+  const [updateData, setUpdatedata] = React.useState(inititalState);
 
-   React.useEffect(()=>{
+  React.useEffect(() => {
     check();
     getUpdateMetadata();
-   },[])
+  }, []);
 
-
-
-    // 检查更新
+  // 检查更新
   const check = () => {
     CodePush.checkForUpdate(CODE_PUSH_KEY).then((update) => {
       if (!update || update.failedInstall) {
         // 已是最新版
-      } else {
-          setUpdatedata({...updateData,modalVisible: true,updateInfo: update,isMandatory: update.isMandatory})
+        return;
       }
+      setUpdatedata({
+        ...updateData,
+        modalVisible: true,
+        updateInfo: update,
+        isMandatory: update.isMandatory,
+      });
     });
   };
 
-
   const getUpdateMetadata = () => {
     CodePush.getUpdateMetadata().then((update) => {
-      const updateTime = new Date(Number(update.binaryModifiedTime));
+      let updateTime = '';
+      if (update && update.binaryModifiedTime) {
+        updateTime = new Date(Number(update.binaryModifiedTime));
+      }
+
       if (update) {
-          setUpdatedata({...updateData,  binaryModifiedTime:
+        setUpdatedata({
+          ...updateData,
+          binaryModifiedTime:
             updateTime.toLocaleDateString().replace(/\//g, '-') +
             ' ' +
-            updateTime.toTimeString().substr(0, 8), CodePushRelease: update.label,
-            packageSize: update.packageSize})
+            updateTime.toTimeString().substr(0, 8),
+          CodePushRelease: update.label,
+          packageSize: update.packageSize,
+        });
       }
     });
   };
@@ -72,89 +84,100 @@ const HotPushModal = () => {
    * codePush.InstallMode.ON_NEXT_SUSPEND 表示您要在后台运行更新，但要在后台运行了最少BackgroundDuration秒（默认为0）后才能安装
    */
 
-
-     // 更新版本
-  update = () => {
-    setUpdatedata({...updateData,isUpdate: true})
+  // 更新版本
+  const update = () => {
+    setUpdatedata({...updateData, isUpdate: true,isUploadPacke: true});
+    console.log(updateData,'update' ,1111111111);
     CodePush.sync(
       {
-        deploymentKey: CODE_PUSH_KEY,
-        updateDialog: false,
+        // deploymentKey: CODE_PUSH_KEY,
+        // updateDialog: false,
         // installMode: CodePush.InstallMode.IMMEDIATE,
         // installMode: CodePush.InstallMode.ON_NEXT_RESTART,
       },
-      codePushStatusDidChange(),
-      codePushDownloadDidProgress(),
+      (syncStatus) => {
+        codePushStatusDidChange(syncStatus);
+      },
+      (Progress) => {
+        setUpdatedata({...updateData, isUpdate: true,isUploadPacke: true});
+        codePushDownloadDidProgress(Progress);
+      },
     );
   };
 
-
-    // 下载状态变化
-   const  codePushStatusDidChange = (syncStatus) => {
-        if (updateData.isUpdate) {
-          switch (syncStatus) {
-            case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
-                updateData.syncMessage = 'Checking for update';
-              break;
-            case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
-                updateData.syncMessage = 'Downloading package';
-              break;
-            case CodePush.SyncStatus.AWAITING_USER_ACTION:
-                updateData.syncMessage = 'Awaiting user action';
-              break;
-            case CodePush.SyncStatus.INSTALLING_UPDATE:
-                updateData.syncMessage = 'Installing update';
-              break;
-            case CodePush.SyncStatus.UP_TO_DATE:
-                updateData.syncMessage = '该应用程序已配置了部署的最新信息';
-              break;
-            case CodePush.SyncStatus.UPDATE_IGNORED:
-                updateData.syncMessage = 'Update cancelled by user';
-              break;
-            case CodePush.SyncStatus.UPDATE_INSTALLED:
-                updateData.syncMessage = 'Update installed and will be applied on restart.';
-              break;
-            case CodePush.SyncStatus.UNKNOWN_ERROR:
-                updateData.syncMessage = 'An unknown error occurred';
-                setUpdatedata({...updateData,modalVisible: false})
-              break;
-          }
-        }
-      };
-
-      // 计算下载进度
-      const codePushDownloadDidProgress = (Progress) => {
-        setUpdatedata({...updateData,isUploadPacke: true})
-        if (updateData.isUpdate) {
-          let currProgress =
-            Math.floor((Progress.receivedBytes / Progress.totalBytes) * 100) / 100;
-            setUpdatedata({...updateData,progress: currProgress})
-          if (currProgress >= 1) {
-            setUpdatedata({...updateData,showAskUpdateContent: true, isUploadPacke: false})
-            // setUpdatedata({...updateData,modalVisible: false})
-          }
-        }
-      };
-
-
-      const onAppRestartCancel=()=> {
-        setUpdatedata({...updateData,modalVisible: false})
+  // 下载状态变化
+  const codePushStatusDidChange = (syncStatus) => {
+    console.log('codePushStatusDidChange',updateData.isUpdate,222222222);
+    if (!updateData.isUpdate) {
+      switch (syncStatus) {
+        case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
+          updateData.syncMessage = 'Checking for update';
+          break;
+        case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
+          updateData.syncMessage = 'Downloading package';
+          break;
+        case CodePush.SyncStatus.AWAITING_USER_ACTION:
+          updateData.syncMessage = 'Awaiting user action';
+          break;
+        case CodePush.SyncStatus.INSTALLING_UPDATE:
+          updateData.syncMessage = 'Installing update';
+          break;
+        case CodePush.SyncStatus.UP_TO_DATE:
+          updateData.syncMessage = '该应用程序已配置了部署的最新信息';
+          break;
+        case CodePush.SyncStatus.UPDATE_IGNORED:
+          updateData.syncMessage = 'Update cancelled by user';
+          break;
+        case CodePush.SyncStatus.UPDATE_INSTALLED:
+          updateData.syncMessage =
+            'Update installed and will be applied on restart.';
+          break;
+        case CodePush.SyncStatus.UNKNOWN_ERROR:
+          updateData.syncMessage = 'An unknown error occurred';
+          setUpdatedata({...updateData, modalVisible: false});
+          break;
       }
-
-      const onAppRestart=() =>{
-        CodePush.restartApp();
-      }
-
-
-        // 取消
-  const onCancel = () => {
-    setUpdatedata({...updateData,modalVisible: false})
+    }
   };
 
+  // 计算下载进度
+  const codePushDownloadDidProgress = (Progress) => {
+    console.log(Progress, updateData, 333333333333);
 
+    if (!updateData.isUpdate) {
+      const progress =
+        Math.floor((Progress.receivedBytes / Progress.totalBytes) * 100) / 100;
+      console.log(progress, 444444444444444);
+      setUpdatedata({...updateData, progress});
+      if (progress >= 1) {
+        console.log(555555555555555, progress);
+        setUpdatedata({
+          ...updateData,
+          showAskUpdateContent: true,
+          isUploadPacke: false,
+        });
+        // setUpdatedata({...updateData,modalVisible: false})
+      }
+    }
+  };
+
+  const onAppRestartCancel = () => {
+    setUpdatedata({...updateData, modalVisible: false});
+  };
+
+  const onAppRestart = () => {
+    CodePush.restartApp();
+  };
+
+  // 取消
+  const onCancel = () => {
+    console.log(999999999);
+    setUpdatedata({...updateData, modalVisible: false});
+  };
+  console.log(updateData, updateData.isUpdate, 6666666666666);
   return (
     <Modal
-      animationType={'slide'}
+      animationType={'none'}
       transparent={true}
       visible={updateData.modalVisible}>
       <View style={styles.content}>
@@ -182,9 +205,13 @@ const HotPushModal = () => {
                 source={require('../../assets//updata.png')}
               />
             </LinearGradient>
-            <Text style={styles.packageSize}>更新包大小{updateData.packageSize}KB</Text>
+            {updateData && updateData.packageSize.length > 0 && (
+              <Text style={styles.packageSize}>
+                更新包大小{updateData.packageSize}KB
+              </Text>
+            )}
             <View style={styles.updateDes}>
-              {updateData.binaryModifiedTime.length > 0 && (
+              {updateData && updateData.binaryModifiedTime.length > 0 && (
                 <Text style={styles.binaryModifiedTime}>
                   版本更新时间:{updateData.binaryModifiedTime}
                 </Text>
@@ -219,7 +246,7 @@ const HotPushModal = () => {
             )}
           </View>
         )}
-        {updateData.isUpdate && isUploadPacke && (
+        {updateData.isUpdate && updateData.isUploadPacke && (
           <View style={styles.contentArea}>
             <Text style={[styles.header, {color: '#333'}]}>
               正在更新下载,请稍候...
@@ -234,7 +261,7 @@ const HotPushModal = () => {
             </Text>
           </View>
         )}
-        {showAskUpdateContent && (
+        {updateData.showAskUpdateContent && (
           <View style={styles.askUpdateContent}>
             <IconFont
               name="iconicon-test1"
@@ -244,8 +271,7 @@ const HotPushModal = () => {
             />
             <Text style={styles.downloadCompleteTitle}>安装包下载完毕</Text>
             <View style={styles.buttonsArea}>
-              <TouchableNativeFeedback
-                onPress={onAppRestartCancel}>
+              <TouchableNativeFeedback onPress={onAppRestartCancel}>
                 <View style={[styles.buttons, {backgroundColor: '#DB4C40'}]}>
                   <Text style={[styles.buttonText]}>下次再说</Text>
                 </View>
@@ -263,132 +289,127 @@ const HotPushModal = () => {
   );
 };
 
-
-
-
 const styles = StyleSheet.create({
-    content: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0,0,0,0.6)',
-    },
-    contentArea: {
-      width: 300,
-      backgroundColor: '#fff',
-      borderRadius: 20,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    header: {
-      width: 300,
-      textAlign: 'center',
-      fontSize: 20,
-      color: '#DB4C40',
-      marginTop: 20,
-      marginBottom: 10,
-    },
-    updateDes: {
-      width: 300,
-      paddingLeft: 30,
-      paddingRight: 30,
-    },
-    header_bg: {
-      width: 300,
-      height: 100,
-      marginBottom: -20,
-    },
-    titleWrapper: {
-      height: 60,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-    },
-    packageSize: {
-      color: 'red',
-      marginBottom: 10,
-    },
-    binaryModifiedTime: {
-      paddingVertical: 10,
-      fontSize: 14,
-    },
-    label: {
-      color: '#fff',
-      fontSize: 30,
-    },
-    linearHeader: {
-      paddingTop: 20,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-    },
-    title: {
-      fontSize: 18,
-      marginBottom: 10,
-    },
-    description: {
-      fontSize: 16,
-    },
-    buttonArea: {
-      width: 300,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    button: {
-      width: 150,
-      height: 40,
-      borderRadius: 20,
-      marginTop: 20,
-      marginBottom: 10,
-    },
-    buttonText: {
-      lineHeight: 40,
-      color: '#fff',
-      fontSize: 18,
-      textAlign: 'center',
-    },
-    buttonsArea: {
-      width: 300,
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      alignItems: 'center',
-      paddingLeft: 10,
-      paddingRight: 10,
-      paddingBottom: 10,
-    },
-    buttons: {
-      width: 105,
-      height: 40,
-      borderRadius: 20,
-      marginTop: 20,
-      marginBottom: 10,
-    },
-    progress: {
-      height: 20,
-      width: 200,
-      marginLeft: 50,
-      marginRight: 50,
-      borderRadius: 10,
-    },
-    iconhuojian2: {
-      // position: 'absolute',
-      // top: -100,
-    },
-    askUpdateContent: {
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'space-around',
-      width: 300,
-      height: 240,
-      backgroundColor: '#fff',
-      borderRadius: 15,
-    },
-    downloadCompleteTitle: {
-      fontSize: 20,
-    },
-  });
-
-
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.6)',
+  },
+  contentArea: {
+    width: 300,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  header: {
+    width: 300,
+    textAlign: 'center',
+    fontSize: 20,
+    color: '#DB4C40',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  updateDes: {
+    width: 300,
+    paddingLeft: 30,
+    paddingRight: 30,
+  },
+  header_bg: {
+    width: 300,
+    height: 100,
+    marginBottom: -20,
+  },
+  titleWrapper: {
+    height: 60,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  packageSize: {
+    color: 'red',
+    marginBottom: 10,
+  },
+  binaryModifiedTime: {
+    paddingVertical: 10,
+    fontSize: 14,
+  },
+  label: {
+    color: '#fff',
+    fontSize: 30,
+  },
+  linearHeader: {
+    paddingTop: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  title: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  description: {
+    fontSize: 16,
+  },
+  buttonArea: {
+    width: 300,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    width: 150,
+    height: 40,
+    borderRadius: 20,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  buttonText: {
+    lineHeight: 40,
+    color: '#fff',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  buttonsArea: {
+    width: 300,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+  },
+  buttons: {
+    width: 105,
+    height: 40,
+    borderRadius: 20,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  progress: {
+    height: 20,
+    width: 200,
+    marginLeft: 50,
+    marginRight: 50,
+    borderRadius: 10,
+  },
+  iconhuojian2: {
+    // position: 'absolute',
+    // top: -100,
+  },
+  askUpdateContent: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    width: 300,
+    height: 240,
+    backgroundColor: '#fff',
+    borderRadius: 15,
+  },
+  downloadCompleteTitle: {
+    fontSize: 20,
+  },
+});
 
 export default HotPushModal;

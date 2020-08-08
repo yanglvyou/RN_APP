@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "clean-android-bundle": "rm -rf ./bundles/android/*",
     "clean-ios-bundle": "rm -rf ./bundles/ios/*",
-    "push-android-staging": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Staging --des '1.测试code-push弹窗21\n2.修改弹窗样式\n3.调整更新模式' --m false",
+    "push-android-staging": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Staging --des '1.测试code-push弹窗35\n2.修改弹窗样式\n3.调整更新模式' --m false",
     "deploy-history-android-staging": "code-push deployment history RN_APP-Android Staging",
     "deploy-history-android": "code-push deployment history RN_APP-Android Production"
   },

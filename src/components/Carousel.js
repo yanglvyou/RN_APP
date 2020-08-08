@@ -64,7 +64,7 @@ const Carousel = props => {
           onSnapToItem(index);
         }}
         loop
-        // autoplay
+        autoplay
       />
       {pagination()}
     </View>

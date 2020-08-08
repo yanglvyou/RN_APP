@@ -1,5 +1,4 @@
 import React, {PureComponent} from 'react';
-import {connect} from 'react-redux';
 import {
   View,
   Text,
@@ -7,12 +6,16 @@ import {
   Modal,
   TouchableNativeFeedback,
   Image,
-  Dimensions,
+  AppState,
 } from 'react-native';
 import CodePush from 'react-native-code-push';
 import LinearGradient from 'react-native-linear-gradient';
 import ProgressBar from 'react-native-progress/Bar';
 import IconFont from '@/assets/iconfont';
+// ios Production=1CfQKqiExW0wxcsFPynPPzMsRhmHM_e56T9rPB ;Staging=LIoaqqdF2JPClh3eQ2htRTFc2SoL5TX47HcE5;
+
+// android Production=1qnDSWmgkkDs2N7pXTmH8o8tqm2e9GTZ-sG1vd ;Staging=yuCW8NX_EzOpz69pJJNQqdrPDuhC_wpDVICBi;
+
 // 安卓下的热更新 CODE_PUSH_KEY
 const CODE_PUSH_KEY = 'yuCW8NX_EzOpz69pJJNQqdrPDuhC_wpDVICBi';
 // 屏幕
@@ -27,24 +30,27 @@ class HotpushModal extends PureComponent {
       isUpdate: false, // 是否有新版本
       updateInfo: {},
       binaryModifiedTime: '', // 更新时间
-      isUploadPacke: false,
-      showAskUpdateContent: false,
       CodePushRelease: '',
+      uploadDone: false,
       progress: 0,
       packageSize: 0,
     };
   }
 
   componentDidMount() {
-    // 热更新
-    CodePush.notifyAppReady();
-    // 检查更新
-    this.check();
-    this.getUpdateMetadata();
+    AppState.addEventListener('change', (newState) => {
+      if (newState === 'active') {
+        console.log('active', 1111111111);
+        CodePush.notifyAppReady();
+        this.getUpdateMetadata();
+        // 检查更新
+        this.checkUpdate();
+      }
+    });
   }
 
   // 检查更新
-  check = () => {
+  checkUpdate = () => {
     CodePush.checkForUpdate(CODE_PUSH_KEY).then((update) => {
       console.log('update: ', update);
       if (!update || update.failedInstall) {
@@ -87,8 +93,8 @@ class HotpushModal extends PureComponent {
     this.setState({isUpdate: true});
     CodePush.sync(
       {
-        deploymentKey: CODE_PUSH_KEY,
-        updateDialog: false,
+        // deploymentKey: CODE_PUSH_KEY,
+        // updateDialog: false,
         // installMode: CodePush.InstallMode.IMMEDIATE,
         // installMode: CodePush.InstallMode.ON_NEXT_RESTART,
       },
@@ -106,7 +112,6 @@ class HotpushModal extends PureComponent {
 
   // 下载状态变化
   codePushStatusDidChange = (syncStatus) => {
-    console.log('syncStatus: ', syncStatus, 8888888);
     if (this.state.isUpdate) {
       switch (syncStatus) {
         case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
@@ -128,6 +133,7 @@ class HotpushModal extends PureComponent {
           this.syncMessage = 'Update cancelled by user';
           break;
         case CodePush.SyncStatus.UPDATE_INSTALLED:
+          this.setState({uploadDone: true});
           this.syncMessage = 'Update installed and will be applied on restart.';
           break;
         case CodePush.SyncStatus.UNKNOWN_ERROR:
@@ -140,7 +146,6 @@ class HotpushModal extends PureComponent {
 
   // 计算下载进度
   codePushDownloadDidProgress = (Progress) => {
-    this.setState({isUploadPacke: true});
     if (this.state.isUpdate) {
       let currProgress =
         Math.floor((Progress.receivedBytes / Progress.totalBytes) * 100) / 100;
@@ -148,14 +153,13 @@ class HotpushModal extends PureComponent {
         progress: currProgress,
       });
       if (currProgress >= 1) {
-        this.setState({showAskUpdateContent: true, isUploadPacke: false});
+        this.setState({uploadDone: true});
         // this.setState({modalVisible: false});
       }
     }
   };
 
   onAppRestartCancel() {
-    this.SyncStatusCode = -1;
     this.setState({modalVisible: false});
   }
 
@@ -164,16 +168,11 @@ class HotpushModal extends PureComponent {
   }
 
   render() {
-    console.log('mmmm');
     const packageSize = parseInt(this.state.packageSize / 1024);
-    const {
-      binaryModifiedTime,
-      showAskUpdateContent,
-      isUploadPacke,
-    } = this.state;
+    const {binaryModifiedTime, uploadDone} = this.state;
     return (
       <Modal
-        animationType={'slide'}
+        animationType={'none'}
         transparent={true}
         visible={this.state.modalVisible}>
         <View style={styles.content}>
@@ -240,7 +239,7 @@ class HotpushModal extends PureComponent {
               )}
             </View>
           )}
-          {this.state.isUpdate && isUploadPacke && (
+          {this.state.isUpdate && !uploadDone && (
             <View style={styles.contentArea}>
               <Text style={[styles.header, {color: '#333'}]}>
                 正在更新下载,请稍候...
@@ -255,7 +254,7 @@ class HotpushModal extends PureComponent {
               </Text>
             </View>
           )}
-          {showAskUpdateContent && (
+          {uploadDone && (
             <View style={styles.askUpdateContent}>
               <IconFont
                 name="iconicon-test1"
@@ -280,6 +279,18 @@ class HotpushModal extends PureComponent {
             </View>
           )}
         </View>
+        {!this.state.isUpdate && (
+          <View style={styles.modalClose}>
+            <TouchableNativeFeedback onPress={this.onCancel.bind(this)}>
+              <IconFont
+                name="iconguanbi"
+                size={40}
+                // color="#fff"
+                style={styles.iconguanbi}
+              />
+            </TouchableNativeFeedback>
+          </View>
+        )}
       </Modal>
     );
   }
@@ -407,4 +418,12 @@ const styles = StyleSheet.create({
   downloadCompleteTitle: {
     fontSize: 20,
   },
+  modalClose: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 150,
+  },
+  iconguanbi: {},
 });
