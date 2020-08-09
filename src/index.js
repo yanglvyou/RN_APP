@@ -7,7 +7,7 @@ import SplashScreen from 'react-native-splash-screen';
 import Navigator from '@/navigator/index';
 import store from '@/config/dva';
 import '@/config/http';
-import HotPushModal from '@/components/codePush/HotPushModal';
+import HotUpdateModal from '@/components/codePush/HotUpdateModal';
 
 let codePushOptions = {checkFrequency: CodePush.CheckFrequency.MANUAL};
 
@@ -64,7 +64,7 @@ const App = () => {
   return (
     <StoreProvider store={store}>
       <Navigator />
-      <HotPushModal />
+      <HotUpdateModal />
     </StoreProvider>
   );
 };

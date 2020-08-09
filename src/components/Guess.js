@@ -105,15 +105,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 8,
     margin: 8,
-    // shadowColor: '#ccc',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.23,
-    // shadowRadius: 2.62,
+    shadowColor: '#ccc',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
 
-    // elevation: 4,
+    elevation: 4,
   },
   item: {
     flex: 1,
@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
   },
   changeItem: {
     marginHorizontal: 10,
+    paddingBottom:10,
   },
   linearGradientItem: {
     width: '100%',
