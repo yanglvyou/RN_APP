@@ -15,7 +15,7 @@
     "android:bundle": "cd android && ./gradlew bundleRelease",
     "android:install": "cd android && ./gradlew assembleRelease && ./gradlew installRelease",
     "clean-ios-bundle": "rm -rf ./bundles/ios/*",
-    "push-android-staging": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Staging --des '1.测试code-push弹窗35\n2.修改弹窗样式\n3.调整更新模式' --m false",
+    "push-android-staging": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Staging --des '1.测试code-push弹窗36\n2.修改弹窗样式\n3.调整更新模式' --m false",
     "deploy-history-android-staging": "code-push deployment history RN_APP-Android Staging",
     "deploy-history-android": "code-push deployment history RN_APP-Android Production",
     "push-android": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Production --des '1.测试Production环境code-push弹窗3\n2.修改弹窗样式\n3.调整更新模式' --m false",
@@ -24,6 +24,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/slider": "^3.0.3",
     "@react-native-community/viewpager": "^4.1.3",
     "@react-navigation/bottom-tabs": "^5.7.2",
     "@react-navigation/drawer": "^5.8.6",

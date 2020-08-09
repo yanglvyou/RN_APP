@@ -1,12 +1,35 @@
 import React from 'react';
-import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import * as Animatable from 'react-native-animatable';
 import {useTheme} from '@react-navigation/native';
 import IconFont from '@/assets/iconfont';
 import Touchable from '@/components/Touchable';
+import TouchableAnimatable from '@/components/TouchableAnimatable';
 
 const Guess = ({guess, onPress}) => {
   const {dark, colors} = useTheme();
-  const _keyExtractor = item => {
+
+  let ref = null;
+  const handleRef = (refs) => {
+    ref = refs;
+  };
+
+  const lookMore = () => {
+    if (ref) {
+      console.log(111111111);
+    }
+  };
+
+  const _keyExtractor = (item) => {
     return item.id;
   };
 
@@ -33,15 +56,26 @@ const Guess = ({guess, onPress}) => {
       ]}>
       <View style={styles.header}>
         <View style={styles.guessLike}>
-          <IconFont name="iconxihuantianchong" color="#f86442" />
-          <Text style={[styles.guessLikeTitle, {color: colors.text}]}>
-            猜你喜欢
-          </Text>
+          <Animatable.View
+            animation="pulse"
+            easing="ease-out"
+            iterationCount="infinite"
+            ref={handleRef}
+            useNativeDriver>
+            <IconFont name="iconxihuantianchong" color="#f86442" size={28} />
+          </Animatable.View>
+
+          <Text style={[styles.guessLikeTitle]}>猜你喜欢</Text>
         </View>
-        <View style={styles.more}>
-          <Text style={[styles.moreTitle, {color: colors.text}]}>更多</Text>
-          <IconFont name="icongengduo" />
-        </View>
+        <TouchableWithoutFeedback onPress={lookMore}>
+          <Animatable.View
+            animation="bounceIn"
+            style={[styles.more, styles.guessAnimatableView]}
+            useNativeDriver>
+            <Text style={[styles.moreTitle]}>查看更多</Text>
+            <IconFont name="icongengduo" color="#fff" />
+          </Animatable.View>
+        </TouchableWithoutFeedback>
       </View>
       <FlatList
         numColumns={3}
@@ -50,10 +84,18 @@ const Guess = ({guess, onPress}) => {
         style={styles.flatList}
         keyExtractor={_keyExtractor}
       />
-      <Touchable style={styles.changeItem}>
-        <IconFont name="iconziyuan" color="#f86442" />
-        <Text style={[styles.changeText, {color: colors.text}]}>换一批</Text>
-      </Touchable>
+      <Animatable.View animation="bounceInLeft">
+        <Touchable style={styles.changeItem}>
+          <LinearGradient
+            colors={['#08d4c4', '#01ab9d']}
+            style={styles.linearGradientItem}>
+            <IconFont name="iconziyuan" color="#f86442" />
+            <Text style={[styles.changeText, {color: colors.text}]}>
+              换一批
+            </Text>
+          </LinearGradient>
+        </Touchable>
+      </Animatable.View>
     </View>
   );
 };
@@ -92,6 +134,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#ccc',
   },
+  guessAnimatableView: {
+    flexDirection: 'row',
+    backgroundColor: '#217983',
+    padding: 5,
+    borderRadius: 5,
+  },
   guessLike: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -103,15 +151,22 @@ const styles = StyleSheet.create({
   guessLikeTitle: {
     fontSize: 16,
     marginLeft: 5,
+    color: 'black',
   },
   moreTitle: {
     fontSize: 16,
+    color: '#fff',
   },
   changeItem: {
-    paddingBottom: 10,
-    justifyContent: 'center',
+    marginHorizontal: 10,
+  },
+  linearGradientItem: {
+    width: '100%',
+    height: 40,
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 10,
   },
   changeText: {
     paddingLeft: 5,

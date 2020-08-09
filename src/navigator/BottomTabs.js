@@ -4,7 +4,7 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from '@/pages/Home/Index';
 import IconFont from '@/assets/iconfont';
-import Anime from '@/pages/anime/Index';
+import Listen from '@/pages/Listen/Index';
 import UserScreen from '@/pages/UserScreen/Index';
 import VarietyShow from '@/pages/varietyShow/Index';
 import HomeTabs from './HomeTabs';
@@ -33,7 +33,7 @@ const BottomTabs = (props) => {
       />
       <Tab.Screen
         name="Listen"
-        component={Anime}
+        component={Listen}
         options={{
           tabBarLabel: '我听',
           tabBarColor: '#1f65ff',

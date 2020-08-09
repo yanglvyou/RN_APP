@@ -9,7 +9,7 @@ import emitter from '@/utils/event';
 import {viewportWidth, hp, wp} from '@/utils/Index';
 
 const sliderWidth = viewportWidth;
-const silderWidth = wp(90);
+const silderWidth = wp(80);
 export const sildeHeight = hp(26);
 const itemWidth = silderWidth + wp(2) * 2;
 const Carousel = props => {

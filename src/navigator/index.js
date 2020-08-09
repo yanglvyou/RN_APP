@@ -40,8 +40,6 @@ import {DrawerContent} from '@/components//DrawerContent';
 import {AuthContext} from '@/components/Context';
 
 
-import HotpushModal from '@/components/codePush/HotPushModal';
-
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
@@ -126,9 +124,6 @@ const Navigator = () => {
                 component={ModalStackScreen}
               />
             </Stack.Navigator>
-
-            <HotpushModal />
-
             {/*<LogoInStackScreen />*/}
 
         </NavigationContainer>
