@@ -2,25 +2,30 @@ import React from 'react';
 import {MaterialTopTabBar} from '@react-navigation/material-top-tabs';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {View, StyleSheet, Text} from 'react-native';
-
 import LinearAnimatedGradientTransition from 'react-native-linear-animated-gradient-transition';
 import {useSelector} from 'react-redux';
-import {useTheme, useNavigation, useRoute} from '@react-navigation/native';
+import {
+  useTheme,
+  DarkTheme,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import Touchable from '@/components/Touchable';
 import emitter from '@/utils/event';
 import {getActiveRouteName} from '@/utils/Index';
 
+console.log(DarkTheme, 333333333);
+
 const TopTabBarWrapper = (props) => {
   [activeCarouselIndex, setActiveCarouselIndex] = React.useState(0);
   const theme = useTheme();
-  // const navigation=useNavigation();
   const route = useRoute();
-  if(route.state){
+  if (route.state) {
     const routeName = getActiveRouteName(route.state);
   }
 
   const {gradientVisible, carousels} = useSelector(({home}) => home);
-  const home = useSelector(({home}) => home);
+
   React.useEffect(() => {
     emitter.addListener('activeCarouselIndex', (activeCarouselIndex) => {
       setActiveCarouselIndex(activeCarouselIndex);
@@ -58,11 +63,7 @@ const TopTabBarWrapper = (props) => {
     }
   }
   return (
-    <View
-      style={[
-        {backgroundColor: theme.dark ? theme.colors.background : '#fff'},
-        styles.container,
-      ]}>
+    <View style={[{backgroundColor: '#fff'}, styles.container]}>
       {linearGradient()}
       <View style={styles.topTabBarView}>
         <MaterialTopTabBar

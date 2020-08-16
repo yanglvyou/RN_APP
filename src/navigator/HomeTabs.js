@@ -13,14 +13,14 @@ const Tab = createMaterialTopTabNavigator();
 const HomeTabs = () => {
   const {dark, colors} = useTheme();
   const {myCategorys} = useSelector(({category}) => category);
-  const renderTabBar = props => {
+  const renderTabBar = (props) => {
     return <TopTapBarWrapper {...props} />;
   };
 
   return (
     <Tab.Navigator
       lazy
-      pager={props => <ViewPagerAdapter {...props} />}
+      pager={(props) => <ViewPagerAdapter {...props} />}
       tabBar={renderTabBar}
       sceneContainerStyle={styles.sceneContainer}
       tabBarOptions={{
@@ -33,10 +33,10 @@ const HomeTabs = () => {
           width: 20,
           marginLeft: 30,
           borderRadius: 2,
-          backgroundColor: dark ? colors.border : '#f86442',
+          backgroundColor: '#f86442',
         },
-        activeTintColor: dark ? colors.text : '#f86442',
-        inactiveTintColor: dark ? colors.text : 'rgba(0,0,0,.6)',
+        activeTintColor: '#f86442',
+        inactiveTintColor: 'rgba(0,0,0,.6)',
       }}>
       <Tab.Screen
         name="Home"

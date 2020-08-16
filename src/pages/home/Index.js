@@ -40,7 +40,7 @@ const Home = () => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   function onGuessPress(item) {
-    navigation.navigate('Album', {item});
+    navigation.navigate('Detail', {item});
   }
 
   function header() {

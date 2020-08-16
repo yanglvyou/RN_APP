@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-import Home from '@/pages/Home/Index';
+// import Home from '@/pages/Home/Index';
 import IconFont from '@/assets/iconfont';
 import Listen from '@/pages/Listen/Index';
 import UserScreen from '@/pages/UserScreen/Index';
@@ -70,7 +70,6 @@ const BottomTabs = (props) => {
   );
 };
 
-
 const UserStackScreen = ({navigation}) => (
   <UserStack.Navigator
     screenOptions={{
@@ -81,7 +80,7 @@ const UserStackScreen = ({navigation}) => (
       },
       headerTitleAlign: 'center',
       gestureEnabled: true,
-      headerTitle:false,
+      headerTitle: false,
       headerBackTitleVisible: false,
       headerTintColor: '#ccc',
       gestureDirection: 'horizontal',
@@ -123,8 +122,14 @@ const Stack = createStackNavigator();
 
 export default () => {
   return (
-    <Stack.Navigator headerMode="none">
-      <Stack.Screen name="bottomtabs" component={BottomTabs} />
+    <Stack.Navigator mode="modal" headerMode="screen">
+      <Stack.Screen
+        name="bottomtabs"
+        options={{
+          headerShown: false,
+        }}
+        component={BottomTabs}
+      />
     </Stack.Navigator>
   );
 };

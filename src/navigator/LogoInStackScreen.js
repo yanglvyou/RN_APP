@@ -18,7 +18,6 @@ const LogoInStackScreen = () => (
     screenOptions={{
       gestureEnabled: true,
       headerTitleAlign: 'center',
-
       headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
       cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
     }}>
