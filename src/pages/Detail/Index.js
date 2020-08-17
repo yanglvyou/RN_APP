@@ -1,89 +1,87 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  Image,
-  ImageBackground,
-} from 'react-native';
+import {View, Text, StyleSheet, Image, Animated} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {BlurView} from '@react-native-community/blur';
 import {
   PanGestureHandler,
   State,
   TapGestureHandler,
 } from 'react-native-gesture-handler';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import * as Animatable from 'react-native-animatable';
-import {useHeaderHeight} from '@react-navigation/stack';
-import {BlurView} from '@react-native-community/blur';
 import coverRight from '@/assets/cover-right.png';
 import {viewportHeight} from '@/utils/Index';
+import {useHeaderHeight} from '@react-navigation/stack';
 import Tab from '@/components/Album/Tab';
+import {useNavigation} from '@react-navigation/native';
 
 const USE_NATIVE_DRIVER = true;
 const HEADER_HEIGHT = 260;
 
-const Detail = () => {
-  const dispatch = useDispatch();
-  const headerHeight = useHeaderHeight(); //获取导航栏高度
+const Album = (props) => {
+  const {route} = props;
   const navigation = useNavigation();
-  const {params} = useRoute(); //获取路由参数
-
+  const {id} = route.params.item;
   const {summary, author, list} = useSelector(({album}) => album);
+  const loading = useSelector(
+    (state) => state.loading.effects['album/fetchAlbum'],
+  );
+  const dispatch = useDispatch();
+  const headerHeight = useHeaderHeight();
+
+  const panRef = React.createRef();
+  const tapRef = React.createRef();
+  const nativeRef = React.createRef();
+
+  let translationYStaticValue = 0;
+  let lastScrollYValue = 0;
+
+  const lastScrollY = React.useRef(new Animated.Value(0)).current;
+
+  const reverseLastScrollY = Animated.multiply(
+    new Animated.Value(-1),
+    lastScrollY,
+  );
+
+  const translationYValue = React.useRef(new Animated.Value(0)).current;
+  const translationYOffset = React.useRef(new Animated.Value(0)).current;
+  const translateY = Animated.add(
+    Animated.add(translationYValue, reverseLastScrollY),
+    translationYOffset,
+  );
 
   const RANGE = [-(HEADER_HEIGHT - headerHeight), 0];
 
   React.useEffect(() => {
-    //获取数据
     dispatch({
       type: 'album/fetchAlbum',
       payload: {
-        id: params.item.id,
+        id,
       },
     });
-  }, [params]);
+  }, [route]);
+
+  React.useEffect(() => {
+    navigation.setParams({
+      opacity: translateY.interpolate({inputRange: RANGE, outputRange: [1, 0]}),
+    });
+  }, []);
 
   React.useLayoutEffect(() => {
-    //进入页面设置options属性
+    const {navigation, route} = props;
     navigation.setOptions({
-      headerTitle: params.item.title,
+      headerTitle: route.params.item.title,
       headerTransparent: true,
       headerTitleStyle: {
-        opacity: translateY.interpolate({
-          inputRange: RANGE,
-          outputRange: [1, 0],
-        }),
+        opacity: route.params.opacity,
       },
       headerBackground: () => {
         return (
           <Animated.View
-            style={[
-              styles.headerBackground,
-              {
-                opacity: translateY.interpolate({
-                  inputRange: RANGE,
-                  outputRange: [1, 0],
-                }),
-              },
-            ]}
+            style={[styles.headerBackground, {opacity: route.params.opacity}]}
           />
         );
       },
     });
-  }, [params]);
-
-  const translationYValue = React.useRef(new Animated.Value(0)).current;
-  const translationYOffset = React.useRef(new Animated.Value(0)).current;
-
-  const translateY = Animated.add(translationYValue, translationYOffset);
-  let translationYStaticValue = 0;
-
-//   React.useEffect(() => {
-//     navigation.setParams({
-//       opacity: translateY.interpolate({inputRange: RANGE, outputRange: [1, 0]}),
-//     });
-//   }, []);
+  }, [props.route]);
 
   const onGestureEvent = Animated.event(
     [{nativeEvent: {translationY: translationYValue}}],
@@ -95,12 +93,15 @@ const Detail = () => {
   const onHandlerStateChange = ({nativeEvent}) => {
     if (nativeEvent.oldState === State.ACTIVE) {
       let {translationY} = nativeEvent;
+      translationY -= lastScrollYValue;
 
-      translationYOffset.extractOffset(); // translationYOffset的值设置到offset上，并清空value值;
-      translationYOffset.setValue(translationY); //translationYOffset从新设置value
+      translationYOffset.extractOffset();
+      translationYOffset.setValue(translationY);
 
-      translationYOffset.flattenOffset(); // value=value+offset;
+      translationYOffset.flattenOffset();
       translationYValue.setValue(0);
+
+      let maxDeltaY = -RANGE[0] - translationYStaticValue;
 
       translationYStaticValue += translationY;
 
@@ -110,23 +111,38 @@ const Detail = () => {
           toValue: RANGE[0],
           useNativeDriver: USE_NATIVE_DRIVER,
         }).start();
+        maxDeltaY = RANGE[1];
       } else if (translationYStaticValue > RANGE[1]) {
         translationYStaticValue = RANGE[1];
         Animated.timing(translationYOffset, {
           toValue: RANGE[1],
           useNativeDriver: USE_NATIVE_DRIVER,
         }).start();
+        maxDeltaY = -RANGE[0];
+      }
+
+      if (tapRef.current) {
+        const tap = tapRef.current;
+        tap.setNativeProps({maxDeltaY});
       }
     }
   };
 
+  const onScrollDrag = Animated.event(
+    [{nativeEvent: {contentOffset: {y: lastScrollY}}}],
+    {
+      useNativeDriver: USE_NATIVE_DRIVER,
+      listener: ({nativeEvent}) => {
+        lastScrollYValue = nativeEvent.contentOffset.y;
+      },
+    },
+  );
+
   function renderHeader() {
-    const {image, title} = params.item;
+    const {image, title} = route.params.item;
     return (
-      <Animatable.View
-        animation="flipInX"
-        style={[styles.header, {paddingTop: headerHeight}]}>
-        <ImageBackground source={{uri: image}} style={styles.backgroundImage} />
+      <View style={[styles.header, {paddingTop: headerHeight}]}>
+        <Image source={{uri: image}} style={styles.backgroundImage} />
         <BlurView
           blurType="light"
           blurAmount={5}
@@ -148,42 +164,54 @@ const Detail = () => {
             <Text style={styles.name}>{author.name}</Text>
           </View>
         </View>
-      </Animatable.View>
+      </View>
     );
   }
   return (
-    <View style={styles.container}>
-      <PanGestureHandler
-        onGestureEvent={onGestureEvent}
-        onHandlerStateChange={onHandlerStateChange}>
-        <Animated.View
-          style={[
-            styles.container,
-            {
-              transform: [
+    <TapGestureHandler maxDeltaY={-RANGE[0]} ref={tapRef}>
+      {!loading ? (
+        <View style={styles.container} pointerEvents="box-none">
+          <PanGestureHandler
+            ref={panRef}
+            simultaneousHandlers={[tapRef, nativeRef]}
+            onGestureEvent={onGestureEvent}
+            onHandlerStateChange={onHandlerStateChange}>
+            <Animated.View
+              style={[
+                styles.container,
                 {
-                  translateY: translateY.interpolate({
-                    inputRange: RANGE,
-                    outputRange: RANGE,
-                    extrapolate: 'clamp',
-                  }),
+                  transform: [
+                    {
+                      translateY: translateY.interpolate({
+                        inputRange: RANGE,
+                        outputRange: RANGE,
+                        extrapolate: 'clamp',
+                      }),
+                    },
+                  ],
                 },
-              ],
-            },
-          ]}>
-          {renderHeader()}
-          <View style={{height: viewportHeight - headerHeight}}>
-            <Tab
-            //   panRef={panRef}
-            //   tapRef={tapRef}
-            //   nativeRef={nativeRef}
-            //   onScrollDrag={onScrollDrag}
-            // onItemPress={onItemPress}
-            />
-          </View>
-        </Animated.View>
-      </PanGestureHandler>
-    </View>
+              ]}>
+              {renderHeader()}
+              <View style={{height: viewportHeight - headerHeight}}>
+                <Tab
+                  panRef={panRef}
+                  tapRef={tapRef}
+                  nativeRef={nativeRef}
+                  onScrollDrag={onScrollDrag}
+                  // onItemPress={onItemPress}
+                />
+              </View>
+            </Animated.View>
+          </PanGestureHandler>
+        </View>
+      ) : (
+        <LottieView
+          source={require('../../assets/animation/22127-dots-load.json')}
+          autoPlay
+          loop
+        />
+      )}
+    </TapGestureHandler>
   );
 };
 
@@ -252,7 +280,7 @@ const styles = StyleSheet.create({
   },
   headerBackground: {
     flex: 1,
-    backgroundColor: '#fb3',
+    backgroundColor: '#58a',
     opacity: 0,
   },
   backImage: {
@@ -260,4 +288,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Detail;
+export default Album;

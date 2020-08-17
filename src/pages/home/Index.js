@@ -1,9 +1,17 @@
 import React from 'react';
-import {View, Text, FlatList, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  BackHandler,
+  StyleSheet,
+  ToastAndroid,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   useNavigation,
   useTheme,
+  useRoute,
   useFocusEffect,
 } from '@react-navigation/native';
 import Config from 'react-native-config';
@@ -14,6 +22,7 @@ import ChannelItem from '@/components/ChannelItem';
 import Touchable from '@/components/Touchable';
 
 const Home = () => {
+  const route = useRoute();
   const navigation = useNavigation();
   const {colors, dark} = useTheme();
   const {carousels, guess, channels, pagination, gradientVisible} = useSelector(
@@ -23,24 +32,40 @@ const Home = () => {
     (state) => state.loading.effects['home/fetchChannels'],
   );
   const dispatch = useDispatch();
+
   React.useEffect(() => {
     dispatch({type: 'home/fetchCarousels'});
     dispatch({type: 'home/fetchGuess'});
     dispatch({type: 'home/fetchChannels'});
-  }, []);
+  }, [route.name]);
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     dispatch({type: 'home/fetchCarousels'});
-  //     dispatch({type: 'home/fetchGuess'});
-  //     dispatch({type: 'home/fetchChannels'});
-  //   }, []),
-  // );
+  [lastTime, setLastTime] = React.useState(0);
+
+  React.useEffect(() => {
+    const onBackAndroid = () => {
+      const nowTime = Date.now();
+      console.log(lastTime, Date.now(), 100000);
+      if (lastTime && lastTime + 2000 >= Date.now()) {
+        //最近2秒内按过back键，可以退出应用。
+        return false;
+      }
+      setLastTime(nowTime);
+      ToastAndroid && ToastAndroid.show('再按一下退出', ToastAndroid.SHORT);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      onBackAndroid,
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
   function onGuessPress(item) {
-    navigation.navigate('Detail', {item});
+    navigation.navigate('Album', {item});
   }
 
   function header() {
@@ -66,7 +91,12 @@ const Home = () => {
   function renderItem({item}) {
     return (
       <View>
-        <ChannelItem data={item} />
+        <ChannelItem
+          data={item}
+          onPress={(item) => {
+            onGuessPress(item);
+          }}
+        />
       </View>
     );
   }
