@@ -22,7 +22,7 @@ const Tab = (props) => {
             tapRef={tapRef}
             nativeRef={nativeRef}
             onScrollDrag={onScrollDrag}
-            // onItemPress={onItemPress}
+            onItemPress={onItemPress}
           />
         );
     }

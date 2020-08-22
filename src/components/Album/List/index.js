@@ -14,8 +14,7 @@ import {useSelector} from 'react-redux';
 import Item from './Item';
 import {NativeViewGestureHandler} from 'react-native-gesture-handler';
 
-const List = ({panRef,tapRef,nativeRef,onScrollDrag}) => {
-  //   const {panRef,tapRef,nativeRef,onScrollDrag,onItemPress} =props
+const List = ({panRef,tapRef,nativeRef,onScrollDrag,onItemPress}) => {
   const {list} = useSelector(({album}) => album);
   function onPress(data, index) {
     onItemPress(data, index);

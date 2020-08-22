@@ -25,8 +25,9 @@ import {
   HeaderStyleInterpolators,
   CardStyleInterpolators,
   HeaderBackButton,
+  TransitionPresets,
 } from '@react-navigation/stack';
-
+import LinearGradient from 'react-native-linear-gradient';
 import IconFont from '@/assets/iconfont';
 
 import storage, {load} from '@/config/storage';
@@ -61,18 +62,21 @@ const Stack = createStackNavigator();
 //   };
 // }
 
-
-
-// const style = StyleSheet.create({
-//   headerBackground: {
-//     flex: 1,
-//     backgroundColor: '#58a',
-//     opacity: 0,
-//   },
-//   backImage: {
-//     marginHorizontal: Platform.OS === 'android' ? 0 : 8,
-//   },
-// });
+const style = StyleSheet.create({
+  headerBackground: {
+    flex: 1,
+    backgroundColor: '#58a',
+    opacity: 0,
+  },
+  view: {
+    padding: 5,
+    opacity:.9,
+    borderRadius: 50,
+  },
+  backImage: {
+    marginHorizontal: Platform.OS === 'android' ? 0 : 8,
+  },
+});
 
 const Navigator = () => {
   const [userName, setUserName] = React.useState('');
@@ -121,7 +125,6 @@ const Navigator = () => {
     [],
   );
 
-
   return (
     <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
@@ -159,7 +162,29 @@ const Navigator = () => {
               component={ModalStackScreen}
             />
             <Stack.Screen name="Album" component={Album} />
-            <Stack.Screen name="Detail" component={Detail} />
+            <Stack.Screen
+              options={{
+                headerTintColor: '#fff',
+                headerTitle: '',
+                headerTransparent: true,
+                cardStyle: {backgroundColor: '#807c66'},
+                ...TransitionPresets.ModalTransition,
+                headerBackImage: ({tintColor}) => (
+                  <LinearGradient
+                    colors={['#ffffff', '#ffcc33']}
+                    style={style.view}>
+                    <IconFont
+                      name="iconarrow-down"
+                      size={22}
+                      color={tintColor}
+                      style={style.backImage}
+                    />
+                  </LinearGradient>
+                ),
+              }}
+              name="Detail"
+              component={Detail}
+            />
           </Stack.Navigator>
           {/*<LogoInStackScreen />*/}
         </NavigationContainer>

@@ -41,21 +41,35 @@ const Detail = () => {
   );
   const RANGE = [-(HEADER_HEIGHT - headerHeight), 0];
 
-  useFocusEffect(
-    React.useCallback(() => {
-      //请求数据
-      dispatch({
-        type: 'album/fetchAlbum',
-        payload: {
-          id: params.item.id,
-        },
-      });
-      return () => {
-        // 请清空数据
-        dispatch({type: 'album/resetState'});
-      };
-    }, [params]),
-  );
+  React.useEffect(() => {
+    //请求数据
+    dispatch({
+      type: 'album/fetchAlbum',
+      payload: {
+        id: params.item.id,
+      },
+    });
+    return () => {
+      // 请清空数据
+      dispatch({type: 'album/resetState'});
+    };
+  }, []);
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     //请求数据
+  //     dispatch({
+  //       type: 'album/fetchAlbum',
+  //       payload: {
+  //         id: params.item.id,
+  //       },
+  //     });
+  //     return () => {
+  //       // 请清空数据
+  //       dispatch({type: 'album/resetState'});
+  //     };
+  //   }, [params]),
+  // );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -195,6 +209,12 @@ const Detail = () => {
       </View>
     );
   }
+
+  //跳转到详情页面
+  const onItemPress = (data, index) => {
+    navigation.navigate('Detail', {id: data.id});
+  };
+
   return (
     <TapGestureHandler maxDeltaY={-RANGE[0]} ref={tapRef}>
       {!loading ? (
@@ -225,7 +245,7 @@ const Detail = () => {
                   tapRef={tapRef}
                   nativeRef={nativeRef}
                   onScrollDrag={onScrollDrag}
-                  // onItemPress={onItemPress}
+                  onItemPress={onItemPress}
                 />
               </View>
             </Animated.View>
