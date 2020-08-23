@@ -68,9 +68,15 @@ const style = StyleSheet.create({
     backgroundColor: '#58a',
     opacity: 0,
   },
-  view: {
+  backImageWrapper: {
     padding: 5,
-    opacity:.9,
+    shadowColor: '#ccc',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
     borderRadius: 50,
   },
   backImage: {
@@ -161,10 +167,27 @@ const Navigator = () => {
               }} // 去掉导航顶部
               component={ModalStackScreen}
             />
-            <Stack.Screen name="Album" component={Album} />
             <Stack.Screen
               options={{
-                headerTintColor: '#fff',
+                headerBackImage: ({tintColor}) => (
+                  <LinearGradient
+                    colors={['#ffffff', '#ffcc33']}
+                    style={style.backImageWrapper}>
+                    <IconFont
+                      name="iconzuo"
+                      size={20}
+                      color={tintColor}
+                      style={style.backImage}
+                    />
+                  </LinearGradient>
+                ),
+              }}
+              name="Album"
+              component={Album}
+            />
+            <Stack.Screen
+              options={{
+                headerTintColor: '#000',
                 headerTitle: '',
                 headerTransparent: true,
                 cardStyle: {backgroundColor: '#807c66'},
@@ -172,10 +195,10 @@ const Navigator = () => {
                 headerBackImage: ({tintColor}) => (
                   <LinearGradient
                     colors={['#ffffff', '#ffcc33']}
-                    style={style.view}>
+                    style={style.backImageWrapper}>
                     <IconFont
-                      name="iconarrow-down"
-                      size={22}
+                      name="iconxiangxia1"
+                      size={20}
                       color={tintColor}
                       style={style.backImage}
                     />

@@ -1,7 +1,8 @@
 import HomeModel from './home';
-import category from './category';
-import album from './album';
+import CategoryModel from './category';
+import AlbumModel from './album';
+import PlayerModel from './player';
 
-const models=[HomeModel,category,album];
+const models=[HomeModel,CategoryModel,AlbumModel,PlayerModel];
 
 export default models;

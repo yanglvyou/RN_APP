@@ -25,7 +25,6 @@ const Guess = ({guess, onPress}) => {
 
   const lookMore = () => {
     if (ref) {
-      console.log(111111111);
     }
   };
 

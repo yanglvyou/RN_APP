@@ -212,6 +212,19 @@ const Detail = () => {
 
   //跳转到详情页面
   const onItemPress = (data, index) => {
+    const previousItem = list[index - 1];
+    const nextItem = list[index + 1];
+    const currentItem=list[index];
+    dispatch({
+      type: 'player/setState',
+      payload: {
+        previousId: previousItem ? previousItem.id : '',
+        nextId: nextItem ? nextItem.id : '',
+        title: data.title,
+        thumbnailUrl:params.item.image,
+        sounds: list.map((item) => ({id: item.id, title: item.title})),
+      },
+    });
     navigation.navigate('Detail', {id: data.id});
   };
 
@@ -239,7 +252,7 @@ const Detail = () => {
                 },
               ]}>
               {renderHeader()}
-              <View style={{height: viewportHeight - headerHeight}}>
+              <View style={{height: viewportHeight,paddingBottom:50}}>
                 <Tab
                   panRef={panRef}
                   tapRef={tapRef}

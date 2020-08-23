@@ -87,7 +87,6 @@ const HotPushModal = () => {
   // 更新版本
   const update = () => {
     setUpdatedata({...updateData, isUpdate: true,isUploadPacke: true});
-    console.log(updateData,'update' ,1111111111);
     CodePush.sync(
       {
         // deploymentKey: CODE_PUSH_KEY,
@@ -142,15 +141,12 @@ const HotPushModal = () => {
 
   // 计算下载进度
   const codePushDownloadDidProgress = (Progress) => {
-    console.log(Progress, updateData, 333333333333);
 
     if (!updateData.isUpdate) {
       const progress =
         Math.floor((Progress.receivedBytes / Progress.totalBytes) * 100) / 100;
-      console.log(progress, 444444444444444);
       setUpdatedata({...updateData, progress});
       if (progress >= 1) {
-        console.log(555555555555555, progress);
         setUpdatedata({
           ...updateData,
           showAskUpdateContent: true,
@@ -171,10 +167,8 @@ const HotPushModal = () => {
 
   // 取消
   const onCancel = () => {
-    console.log(999999999);
     setUpdatedata({...updateData, modalVisible: false});
   };
-  console.log(updateData, updateData.isUpdate, 6666666666666);
   return (
     <Modal
       animationType={'none'}

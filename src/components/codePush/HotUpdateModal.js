@@ -44,7 +44,6 @@ class HotpushModal extends PureComponent {
   componentDidMount() {
     AppState.addEventListener('change', (newState) => {
       if (newState === 'active') {
-        console.log('active', 1111111111);
         CodePush.notifyAppReady();
         this.getUpdateMetadata();
         // 检查更新

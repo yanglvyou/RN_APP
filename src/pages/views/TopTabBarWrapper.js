@@ -14,7 +14,6 @@ import Touchable from '@/components/Touchable';
 import emitter from '@/utils/event';
 import {getActiveRouteName} from '@/utils/Index';
 
-console.log(DarkTheme, 333333333);
 
 const TopTabBarWrapper = (props) => {
   [activeCarouselIndex, setActiveCarouselIndex] = React.useState(0);
