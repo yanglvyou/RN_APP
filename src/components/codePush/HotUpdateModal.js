@@ -151,7 +151,7 @@ class HotpushModal extends PureComponent {
   codePushDownloadDidProgress = (Progress) => {
     if (this.state.isUpdate) {
       let currProgress =
-        Math.floor((Progress.receivedBytes / Progress.totalBytes) * 100) / 100;
+        (Math.floor((Progress.receivedBytes / Progress.totalBytes) * 100) / 100).toFixed(2);
       this.setState({
         progress: currProgress,
       });
