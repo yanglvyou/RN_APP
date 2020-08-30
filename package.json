@@ -15,10 +15,10 @@
     "android:bundle": "cd android && ./gradlew bundleRelease",
     "android:install": "cd android && ./gradlew assembleRelease && ./gradlew installRelease",
     "clean-ios-bundle": "rm -rf ./bundles/ios/*",
-    "push-android-staging": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Staging --des '添加音频播放页面' --m false",
+    "push-android-staging": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Staging --des '调整code-push更新' --m false",
     "deploy-history-android-staging": "code-push deployment history RN_APP-Android Staging",
     "deploy-history-android": "code-push deployment history RN_APP-Android Production",
-    "push-android": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Production --des '添加音频播放页面' --m false",
+    "push-android": "code-push release-react RN_APP-Android android  --t 1.0.0 --dev false --d Production --des '调整code-push更新' --m false",
     "publish:android": "export ENVFILE=.env.production && npx upload-pgy --apk=v7a --no-ios"
   },
   "dependencies": {

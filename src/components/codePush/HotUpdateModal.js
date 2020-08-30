@@ -45,7 +45,7 @@ class HotpushModal extends PureComponent {
     AppState.addEventListener('change', (newState) => {
       if (newState === 'active') {
         CodePush.notifyAppReady();
-        this.getUpdateMetadata();
+        // this.getUpdateMetadata();
         // 检查更新
         this.checkUpdate();
       }
@@ -55,7 +55,7 @@ class HotpushModal extends PureComponent {
   // 检查更新
   checkUpdate = () => {
     CodePush.checkForUpdate(CODE_PUSH_KEY).then((update) => {
-      console.log('update: ', update);
+      console.log('update: ', update,'code-push更新信息');
       if (!update || update.failedInstall) {
         // 已是最新版
       } else {
@@ -63,6 +63,8 @@ class HotpushModal extends PureComponent {
           modalVisible: true,
           updateInfo: update,
           isMandatory: update.isMandatory,
+          CodePushRelease: update.label,
+          packageSize: update.packageSize,
         });
       }
     });
@@ -70,6 +72,7 @@ class HotpushModal extends PureComponent {
 
   getUpdateMetadata = () => {
     CodePush.getUpdateMetadata().then((update) => {
+      console.log('update: ', update,7777777777777777);
       if (update) {
         const updateTime = new Date(Number(update.binaryModifiedTime));
         this.setState({
@@ -157,7 +160,6 @@ class HotpushModal extends PureComponent {
       });
       if (currProgress >= 1) {
         this.setState({uploadDone: true});
-        // this.setState({modalVisible: false});
       }
     }
   };
@@ -252,7 +254,7 @@ class HotpushModal extends PureComponent {
                 正在更新下载,请稍候...
               </Text>
               <ProgressBar
-                progress={this.state.progress}
+                progress={Number(this.state.progress)}
                 height={10}
                 width={260}
               />
@@ -364,7 +366,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   description: {
-    fontSize: 16,
+    fontSize: 18,
+    color:'#58a'
   },
   buttonArea: {
     width: 300,
