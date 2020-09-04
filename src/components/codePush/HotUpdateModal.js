@@ -259,7 +259,7 @@ class HotpushModal extends PureComponent {
                 width={260}
               />
               <Text style={[styles.header, {fontSize: 30}]}>
-                {this.state.progress * 100 + '%'}
+                {Number(this.state.progress * 100).toFixed(2) + '%'}
               </Text>
             </View>
           )}
