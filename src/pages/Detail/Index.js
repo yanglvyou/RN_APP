@@ -6,6 +6,7 @@ import {
   useRoute,
   useFocusEffect,
 } from '@react-navigation/native';
+import {Toast,Button,Modal,TextareaItem} from '@ant-design/react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import IconFont from '@/assets/iconfont';
@@ -59,6 +60,7 @@ const Detail = () => {
   };
 
   const barrageClick = () => {
+    Toast.info('1111111');
     setBarrage(!barrage);
     Animated.timing(anim, {
       toValue: barrage ? 1 : SCALE,

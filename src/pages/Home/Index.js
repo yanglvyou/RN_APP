@@ -14,6 +14,7 @@ import {
   useRoute,
   useFocusEffect,
 } from '@react-navigation/native';
+import {Toast} from '@ant-design/react-native';
 import Config from 'react-native-config';
 import Carousel, {sildeHeight} from '@/components/Carousel';
 import Guess from '@/components/Guess';

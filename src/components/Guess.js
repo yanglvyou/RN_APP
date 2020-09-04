@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
+import {Toast,Button,Modal,TextareaItem} from '@ant-design/react-native';
 import {useTheme} from '@react-navigation/native';
 import IconFont from '@/assets/iconfont';
 import Touchable from '@/components/Touchable';
@@ -24,8 +25,7 @@ const Guess = ({guess, onPress}) => {
   };
 
   const lookMore = () => {
-    if (ref) {
-    }
+    Toast.info('提示')
   };
 
   const _keyExtractor = (item) => {

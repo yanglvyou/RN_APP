@@ -22,11 +22,15 @@
     "publish:android": "export ENVFILE=.env.production && npx upload-pgy --apk=v7a --no-ios"
   },
   "dependencies": {
+    "@ant-design/react-native": "^4.0.5",
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/blur": "^3.6.0",
+    "@react-native-community/cameraroll": "^4.0.0",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/picker": "^1.6.6",
+    "@react-native-community/segmented-control": "^2.1.1",
     "@react-native-community/slider": "^3.0.3",
-    "@react-native-community/viewpager": "^4.1.3",
+    "@react-native-community/viewpager": "^4.1.6",
     "@react-navigation/bottom-tabs": "^5.7.2",
     "@react-navigation/drawer": "^5.8.6",
     "@react-navigation/material-bottom-tabs": "^5.2.14",
