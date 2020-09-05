@@ -1,15 +1,16 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';//底部TabBar变色
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-// import Home from '@/pages/Home/Index';
 import IconFont from '@/assets/iconfont';
 import Listen from '@/pages/Listen/Index';
 import UserScreen from '@/pages/UserScreen/Index';
 import VarietyShow from '@/pages/varietyShow/Index';
 import HomeTabs from './HomeTabs';
+import Play from '@/components/Play';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const UserStack = createStackNavigator();
 
@@ -41,6 +42,16 @@ const BottomTabs = (props) => {
             <IconFont name="iconshoucang" size={size} color={color} />
           ),
         }}
+      />
+
+      <Tab.Screen
+        name="Play"
+        component={Play}
+        options={({navigation}) => ({
+          tabBarButton: (props) => {
+            return <Play {...props} />;
+          },
+        })}
       />
 
       <Tab.Screen

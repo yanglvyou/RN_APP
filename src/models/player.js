@@ -14,7 +14,7 @@ const SHOW_URL = 'mock/11/bear/show';
 const initialState = {
   id: '',
   soundUrl: '',
-  playState: 'playing',
+  playState: '',
   currentTime: 0,
   duration: 0,
   thumbnailUrl: '',
@@ -88,7 +88,7 @@ const playerModel = {
       {type: 'watcher'},
     ],
     *previous({payload}, {call, put, select}) {
-      yield call(stop);
+
       const {id, sounds} = yield select(({player}) => player);
       const index = sounds.findIndex((item) => item.id === id);
       const currentIndex = index - 1;

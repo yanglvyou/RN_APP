@@ -10,10 +10,10 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
+import IconFont from '@/assets/iconfont';
 import Touchable from '@/components/Touchable';
 import emitter from '@/utils/event';
 import {getActiveRouteName} from '@/utils/Index';
-
 
 const TopTabBarWrapper = (props) => {
   [activeCarouselIndex, setActiveCarouselIndex] = React.useState(0);
@@ -72,7 +72,7 @@ const TopTabBarWrapper = (props) => {
           style={styles.tabbar}
         />
         <Touchable style={styles.categoryBtn}>
-          <Text style={textStyle}>分类</Text>
+          <IconFont name="iconsaoma" size={22} color={'#000'}/>
         </Touchable>
       </View>
       <View style={styles.bottom}>
