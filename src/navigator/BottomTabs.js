@@ -49,7 +49,7 @@ const BottomTabs = (props) => {
         component={Play}
         options={({navigation}) => ({
           tabBarButton: (props) => {
-            return <Play {...props} />;
+            return <Play onGoDetaill={()=>navigation.navigate('Detail')} {...props} />;
           },
         })}
       />

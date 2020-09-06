@@ -41,6 +41,8 @@ import Detail from '@/pages/Detail/Index';
 
 import {DrawerContent} from '@/components//DrawerContent';
 import {AuthContext} from '@/components/Context';
+import PlayView from '@/pages/PlayView/Index';
+import {navigationRef,getActiveRouteName} from '@/utils/Index';
 
 // const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -86,7 +88,7 @@ const style = StyleSheet.create({
 
 const Navigator = () => {
   const [userName, setUserName] = React.useState('');
-
+  const [routeName,setRouteName]=React.useState('');
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
   console.log('isDarkTheme: ', isDarkTheme);
 
@@ -131,10 +133,21 @@ const Navigator = () => {
     [],
   );
 
+  const onStateChange = (state) => {
+    if(typeof state!=='undefined'){
+      const routeName=getActiveRouteName(state);
+      setRouteName(routeName);
+    }
+    console.log('state: ', state);
+  };
+
   return (
     <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
-        <NavigationContainer theme={theme}>
+        <NavigationContainer
+          theme={theme}
+          ref={navigationRef}
+          onStateChange={onStateChange}>
           <StatusBar
             backgroundColor={'transparent'}
             barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
@@ -191,7 +204,7 @@ const Navigator = () => {
                 headerTitle: '',
                 headerTransparent: true,
                 cardStyle: {backgroundColor: '#807c66'},
-                ...TransitionPresets.ModalTransition,
+                ...TransitionPresets.ModalPresentationIOS,
                 headerBackImage: ({tintColor}) => (
                   <LinearGradient
                     colors={['#ffffff', '#ffcc33']}
@@ -209,6 +222,7 @@ const Navigator = () => {
               component={Detail}
             />
           </Stack.Navigator>
+          <PlayView routeName={routeName} />
           {/*<LogoInStackScreen />*/}
         </NavigationContainer>
       </AuthContext.Provider>

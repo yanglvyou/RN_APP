@@ -14,7 +14,7 @@ const SHOW_URL = 'mock/11/bear/show';
 const initialState = {
   id: '',
   soundUrl: '',
-  playState: '',
+  playState: 'paused',
   currentTime: 0,
   duration: 0,
   thumbnailUrl: '',

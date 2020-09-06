@@ -1,9 +1,12 @@
 import React from 'react';
 import {View, Text, Easing, StyleSheet, Animated, Image} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import IconFont from '@/assets/iconfont';
+import PlayProgressBar from './PlayProgressBar';
+import Touchable from '@/components/Touchable';
 
-const Play = (props) => {
+const Play = ({onGoDetaill}) => {
   const {playState, thumbnailUrl} = useSelector(({player}) => player);
   const aim = React.useRef(new Animated.Value(0)).current;
   const spin = Animated.loop(
@@ -29,21 +32,24 @@ const Play = (props) => {
     outputRange: ['0deg', '360deg'],
   });
 
+  const onPress=()=>{
+    if(thumbnailUrl&&onGoDetaill){
+      onGoDetaill();
+    }
+  }
+
   return (
-    <View style={styles.wrapper}>
-      <Animated.View style={{transform: [{rotate}]}}>
-        {thumbnailUrl ? (
-          <Image source={{uri: thumbnailUrl}} style={styles.image} />
-        ) : (
-          <IconFont name="iconzantingtingzhi" size={36} color="#ededed" />
-        )}
-        {playState === 'paused1' && (
-          <View>
-            <IconFont name="iconbofang1" size={40} color="#ededed" />
-          </View>
-        )}
-      </Animated.View>
-    </View>
+    <Touchable style={styles.wrapper} onPress={onPress}>
+      <PlayProgressBar>
+        <Animated.View style={{transform: [{rotate}]}}>
+          {thumbnailUrl ? (
+            <Image source={{uri: thumbnailUrl}} style={styles.image} />
+          ) : (
+            <IconFont name="iconbofang1" color="#ededed" size={44} />
+          )}
+        </Animated.View>
+      </PlayProgressBar>
+    </Touchable>
   );
 };
 
